@@ -72,7 +72,7 @@ The first tip about using it is [use the command palette](https://code.visualstu
 After installing it, get the [julia-vscode extension](https://www.julia-vscode.org/). Besides all the usual IDE features, you can easily interact with an embedded Julia REPL: 
 
 ```julia
-# open the `.jmd` file of this noteboo and press `alt+Enter` with the cursor inside this cell  
+# open the `.jmd` file of this notebook and press `alt+Enter` with the cursor inside this cell  
 π^2  
 ```
 
