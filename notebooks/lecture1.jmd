@@ -1,1 +1,74 @@
 ## [Back to the syllabus](/ECMJ-GSSI-2022/README)
+
+# ECMJ: Introduction
+
+## Modeling & Simulation
+
+Science understands reality by designing models which allow to explain and predict observations of the real world. **Simulation** is the computation of the implications of a scientific model. Computers have been invented in order to run simulations fast and reliably, thus allowing for the investigation of complex models. In this course we'll confront the fundamental question "What is a good simulation?" and we'll progress toward an answer by introducing key theoretical ideas and by learning how to perform simulations using the Julia programming language.
+
+
+### Who's Ema?
+
+![](/images/emanuele-natale-small.jpg) 
+
+[I'm a computational scientist](https://natema.github.io/ema-webpage/) who started his scientific career in the theory of multi-agent systems, focusing on algorithmic and probabilistic aspects, and then went on tackling questions in computational neuroscience and artificial neural networks. Recently, I’ve become interested in  Scientific Machine Learning, with the goal of contributing to a more environmentally sustainable society.  
+
+### A tentative bibliography 
+
+The theory behind performing simulations is still not well organized. 
+Here are some references that I found (but I do not endorse any specific one yet).
+If you have a look at any of them, let me know what you think. 
+
+First some references mostly related to programming simulations (which is, after all, our ultimate goal):
+- [_Allen B. Downey. Modeling and Simulation in Python. (Green Tea Press)_](https://greenteapress.com/wp/modsimpy/). Very light book, doesn't even assume familiarity with Python. Not recommended for graduate students.  
+- [_Press, W. H., Teukolsky, S. A., Vetterling, W. T. & Flannery, B. P. Numerical Recipes 3rd Edition: The Art of Scientific Computing. (Cambridge University Press, 2007)_](http://numerical.recipes/aboutNR3book.html). Often regarded as the **bible** of numerical methods for scientific computing.
+
+Here are some which deals mainly with the mathematical aspects (probability and statistics) of designing and performing simulations:
+- [_Bratley, P., Fox, B. L. & Schrage, L. E. A Guide to Simulation. (Springer US, 1983). doi:10.1007/978-1-4684-0167-7_](https://link.springer.com/book/10.1007/978-1-4684-0167-7). Old, especially the programming part, but the math part seems good.
+- [_Ross, S. M. Simulation. (Academic Press, 2012)._](https://www.elsevier.com/books/simulation/ross/978-0-12-415825-2) Looks like a good book as for the probabilistic and statistical background necessary to perform simulations.
+- [_Santner, T. J., Williams, B. J. & Notz, W. I. The Design and Analysis of Computer Experiments. (Springer New York : Imprint: Springer, 2018). doi:10.1007/978-1-4939-8847-1_](https://link.springer.com/book/10.1007/978-1-4757-3799-8). Seems to provide a solid mathematical statistics foundation.
+
+Here's a _philosophy_ book on the topic:
+- [_Winsberg, E. Science in the Age of Computer Simulation. (University of Chicago Press, 2010)_](https://press.uchicago.edu/ucp/books/book/chicago/S/bo9003670.html). 
+
+Finally another book which takes a general perspective and that I didn't feel like listing in previous groups: 
+- [_Velten, K. Mathematical modeling and simulation: introduction for scientists and engineers. (Wiley-VCH, 2009)_](https://www.wiley.com/en-us/Mathematical+Modeling+and+Simulation%3A+Introduction+for+Scientists+and+Engineers-p-9783527407583).
+
+Of course there are many more, but these are the one that caught my attention. Feel free to propose other books that you think deserve to be in the list more than some of those already listed. 
+
+## Two longer courses 
+
+TODO: MIT and SciML
+
+## The Julia Programming Language
+
+![](/images/julia_logo.svg)
+
+[Julia](https://julialang.org/) is a modern language for scientific computing that strive to be as easy as Python and as fast as C. 
+Installing it is as easy as [downloading a file and executing it](https://julialang.org/downloads/), and there are tons of (friendly!) resources for learning and using it: 
+
+- [The docs](https://docs.julialang.org/en/v1/)
+- [A wikibook](https://en.wikibooks.org/wiki/Introducing_Julia), besides [other books](https://benlauwens.github.io/ThinkJulia.jl/latest/book.html)
+- [The Discourse forum](https://discourse.julialang.org/)
+- [The Slack channel](https://julialang.slack.com)
+
+## The VSCode IDE
+
+![](/images/vscode_ide.png)
+
+The officially supported [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) for Julia is [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code). 
+
+The first tip about using it is [use the command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)!
+
+After installing it, get the [julia-vscode extension](https://www.julia-vscode.org/). Besides all the usual IDE features, you can easily interact with an embedded Julia REPL: 
+
+```julia
+# open the `.jmd` file of this noteboo and press `alt+Enter` with the cursor inside this cell  
+π^2  
+```
+
+_Advertisement._ Besides programming in Julia, VSCode is a **great** editor, e.g. for [writing LaTeX](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop). It also easily allow [pair programming](https://code.visualstudio.com/learn/collaboration/live-share) (e.g. editing like in Google Docs or Overleaf), and to [easily work on a remote machine](https://code.visualstudio.com/docs/remote/ssh).
+
+## A first model of climate change
+
+TODO: start climate model 
