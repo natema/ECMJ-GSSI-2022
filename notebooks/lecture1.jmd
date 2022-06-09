@@ -68,7 +68,3 @@ After installing it, get the [julia-vscode extension](https://www.julia-vscode.o
 ```
 
 _Advertisement._ Besides programming in Julia, VSCode is a **great** editor, e.g. for [writing LaTeX](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop). It also easily allow [pair programming](https://code.visualstudio.com/learn/collaboration/live-share) (e.g. editing like in Google Docs or Overleaf), and to [easily work on a remote machine](https://code.visualstudio.com/docs/remote/ssh).
-
-## A first model of climate change
-
-TODO: start climate model 
