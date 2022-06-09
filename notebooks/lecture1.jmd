@@ -11,7 +11,7 @@
 In this course we'll confront the fundamental question "What is a good simulation?" and we'll progress toward an answer by introducing key theoretical ideas and by learning how to perform simulations using the Julia programming language.
 
 
-### Who's Ema?
+### About the instructor
 
 ![](/images/emanuele-natale-small.jpg) 
 
@@ -40,9 +40,14 @@ Finally another book which takes a general perspective and that I didn't feel li
 
 Of course there are many more, but these are the one that caught my attention. Feel free to propose other books that you think deserve to be in the list more than some of those already listed. 
 
-## Two longer courses 
+## Where to take it from here 
 
-TODO: MIT and SciML
+This mini-course aims at making you curious about the topic of scientific computing and, more generally, the use of the Julia language for your research. 
+
+If you want to learn more, check out these courses: 
+
+* [_Introduction to Computational Thinking_](https://computationalthinking.mit.edu/) is an MIT introductory online course to several important ideas in Computer Science using the Julia language, and a Julia library called Pluto to explore those ideas with interactive notebooks. 
+* [Parallel Computing and Scientific Machine Learning (SciML): Methods and Applications](https://book.sciml.ai/) is an MIT advanced online course thought by Chris Rackauckas about *scientific computing* with a focus on machine learning (hence, *scientific machine learning*). I particularly recommend this latter course and whatever can allow you to follow it. 
 
 ## The Julia Programming Language
 
