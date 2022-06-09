@@ -4,7 +4,11 @@
 
 ## Modeling & Simulation
 
-Science understands reality by designing models which allow to explain and predict observations of the real world. **Simulation** is the computation of the implications of a scientific model. Computers have been invented in order to run simulations fast and reliably, thus allowing for the investigation of complex models. In this course we'll confront the fundamental question "What is a good simulation?" and we'll progress toward an answer by introducing key theoretical ideas and by learning how to perform simulations using the Julia programming language.
+- Science understands reality by designing models which allow to explain and predict observations of the real world. 
+- **Simulation** is the computation of the implications of a scientific model. 
+- Computers have been invented in order to run simulations fast and reliably, thus allowing for the investigation of complex models. 
+
+In this course we'll confront the fundamental question "What is a good simulation?" and we'll progress toward an answer by introducing key theoretical ideas and by learning how to perform simulations using the Julia programming language.
 
 
 ### Who's Ema?
