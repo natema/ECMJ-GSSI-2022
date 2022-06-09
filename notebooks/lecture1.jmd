@@ -13,7 +13,7 @@ In this course we'll confront the fundamental question "What is a good simulatio
 
 ### About the instructor
 
-![](/images/emanuele-natale-small.jpg) 
+![](/ECMJ-GSSI-2022/images/emanuele-natale-small.jpg) 
 
 [I'm a computational scientist](https://natema.github.io/ema-webpage/) who started his scientific career in the theory of multi-agent systems, focusing on algorithmic and probabilistic aspects, and then went on tackling questions in computational neuroscience and artificial neural networks. Recently, I’ve become interested in  Scientific Machine Learning, with the goal of contributing to a more environmentally sustainable society.  
 
@@ -51,7 +51,7 @@ If you want to learn more, check out these courses:
 
 ## The Julia Programming Language
 
-![](/images/julia_logo.svg)
+![](/ECMJ-GSSI-2022/images/julia_logo.svg)
 
 [Julia](https://julialang.org/) is a modern language for scientific computing that strive to be as easy as Python and as fast as C. 
 Installing it is as easy as [downloading a file and executing it](https://julialang.org/downloads/), and there are tons of (friendly!) resources for learning and using it: 
@@ -63,7 +63,7 @@ Installing it is as easy as [downloading a file and executing it](https://julial
 
 ## The VSCode IDE
 
-![](/images/vscode_ide.png)
+![](/ECMJ-GSSI-2022/images/vscode_ide.png)
 
 The officially supported [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) for Julia is [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code). 
 
