@@ -2,4 +2,75 @@
 
 # ECMJ: First models of climate change
 
-TODO: start climate model 
+Let's develop a first simple model of climate change. 
+
+We first need to recall the fundamental concept of _differential equation_ and see how to solve them in Julia. 
+
+## Differential equations
+
+What is a **scientific model**? 
+A _matematical description_ of (some aspects of) reality. 
+
+What's the _language_ with which such a description can be formulated?
+It's the language of [equations](https://en.wikipedia.org/wiki/Equation), namely equalities among formulas that impose _constraints_ on what can happen. 
+
+What else can we say about how these equations usually look like?
+Usually, when modeling reality, we are interested in knowing what happens after some **time**, given some _initial conditions_.
+Our equations will likely be **functions of a time variable $t$**. 
+Moreover, it is tipically the case that, rather than being able to describe with an equation how the system look like at a certain time $t$, we only have hypotheses about **how the system changes** across time: 
+for example, we can rarely predict, a priori, where a moving mass will be located in space, but we can provide equations that approximate how the position of the mass will change from an instant to the next one.   
+
+The equations describing how a function _changes_ are called [differential equations](https://en.wikipedia.org/wiki/Differential_equation). 
+
+A simple example of _ordinary_ (one-variable) differential equation is $D_t y = a - bt$. In Julia we can define such differential equation using the [ModelingToolkit](https://mtk.sciml.ai/stable/) library: 
+```julia
+using ModelingToolkit
+
+@variables t y(t)
+@parameters a b
+D = Differential(t)
+
+equation = [ 
+	D(y) ~ a - b*t
+]
+
+@named system = ODESystem(equation)
+```
+The `@named` macro [essentially rewrites](https://discourse.julialang.org/t/modelingtoolkit-jl-version-management/67771/3) the last line as 
+```julia; eval=false
+system = ODESystem(equation; name=:example_system)
+```
+
+We can then solve the system with a compatible [Julia library of numerical solvers](https://mtk.sciml.ai/stable/#Compatible-Numerical-Solvers): 
+```julia
+using DifferentialEquations
+
+init_condition = [y => 0.0]
+time_span = (0.0, 10.0)
+parameters = [a => 2.0, b => .5]
+
+problem = ODEProblem(system, init_condition, time_span, parameters)
+solution = solve(problem)
+```
+
+Let's see the solution: 
+```julia
+using Plots
+plot(solution, ylim=(-5,5), framestyle=:origin)
+```
+
+## The simplest climate model 
+
+Let's consider arguably the [simplest nontrivial climate model](https://computationalthinking.mit.edu/Spring21/our_first_climate_model/): 
+$$\begin{align*} 
+& \text{\color{brown}{change in heat content}} \newline
+&= \text{\color{orange}{absorbed solar radiation (energy from the Sun's rays)}} \newline 
+& \phantom{=} - \text{\color{blue}{outgoing thermal radiation (i.e. blackbody cooling to space)}} \newline 
+& \phantom{=} + \text{\color{grey}{human-caused greenhouse effect (trapped outgoing radiation)}}. 
+\end{align*}$$
+
+Each of the above terms should be intended as an average over the entire globe.
+
+### Absorbed vs outgoing radiation
+
+Let's address the first two terms. 
