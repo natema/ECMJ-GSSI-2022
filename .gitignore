@@ -25,3 +25,6 @@ Manifest.toml
 .vscode/spellright.dict
 .vscode/settings.json
 Project.toml
+
+# Gimp sources
+*.xcf
