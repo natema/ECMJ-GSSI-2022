@@ -71,7 +71,7 @@ $$\begin{align*}
 
 Each of the above terms should be intended as an average over the entire globe.
 
-### Incoming radiation
+### Incoming radiation ☀️
 
 Let's address the first term, $\text{\color{yellow}{incoming solar radiation}}$. 
 
@@ -102,7 +102,7 @@ We then have that the incoming solar radiation on the r.h.s. of our starting equ
 in_radiation = S*(1-α)/4;
 ```
 
-### Earth without outgoing radiation
+### Earth without outgoing radiation 🔥
 
 Let's start by considering **only** the $\text{\color{yellow}{incoming solar radiation}}$ and ignoring the other terms: 
 $$\begin{align*} 
@@ -162,7 +162,7 @@ plot(sol_only_in,
 	title!("Earth's temperature without outgoing radiation")
 ```
 
-### Earth with outgoing radiation 
+### Earth with outgoing radiation 🥶
 
 Let's move on and consider the $ \text{\color{blue}{outgoing thermal radiation}} $, i.e. the [black-body radiation](https://en.wikipedia.org/wiki/Black-body_radiation) which allows Earth to dissipate some of the heat. It is a complicated phenomenon, which we simplify by linearizing it and assuming that, together with the incoming radiation, the overall contribution to $D(\text{temp}(t))$ is equal to $B(\text{temp₀-temp(t)})$ for some $B$: 
 ```julia
@@ -191,4 +191,52 @@ plot(sol_in_and_out,
 😲 Wow!
 Unfortunately we are still ignoring one term of our initial equation...
 
-## The infamous Greenhouse effect
+## The infamous Greenhouse effect ⛽
+
+The [greenhouse effect](https://en.wikipedia.org/wiki/Greenhouse_effect) can be modeled by the equation
+$$
+\begin{align*}
+	\text{\color{grey}{human-caused greenhouse effect (trapped outgoing radiation)}} \newline 
+	= \text{forcing\_coefficient} \cdot \ln \left(\frac {\text{CO}_2}{\text{CO}^{(\text{0})}_2}\right),
+\end{align*}
+$$
+where $\text{CO}^{(\text{0})}_2$ is the initial value of the CO₂ level in the atmosphere. 
+
+Empirical data shows that 
+```julia
+@parameters forcing_coef = 5.0 # W/m^2
+@parameters CO₂⁽⁰⁾ = 280. # pre-industrial CO₂ concentration, in ppm
+```
+
+Our prediction of the Earth's temperature will depend on the amount of CO₂ emission; we thus need an hypothesis on the latter. 
+We can extrapolate such hypothesis from past data. 
+
+![Mauna Loa Volcano](https://i.pinimg.com/originals/df/1a/e7/df1ae72cfd5e6d0d535c0ec99e708f6f.jpg)
+
+Let's look at data from the [Mauna Loa Observatory](https://en.wikipedia.org/wiki/Mauna_Loa_Observatory) (more info [here](https://www.ncei.noaa.gov/pub/data/paleo/icecore/antarctica/law/law2006.txt.)): 
+```julia
+using CSV, DataFrames
+
+CO2_historical_data_url = "https://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/in_situ_co2/monthly/monthly_in_situ_co2_mlo.csv"
+CO2_historical_data = CSV.read(download(CO2_historical_data_url), DataFrame, header=55, skipto=58);
+
+first(CO2_historical_data, 11)
+```
+
+We plot the data after removing missing values (here represented by entries $-99.99$):
+```julia
+validrowsmask = CO2_historical_data[:, "     CO2"] .> 0 
+		
+plot( CO2_historical_data[validrowsmask, "      Date"], 		
+	CO2_historical_data[validrowsmask, "     CO2"], 
+	label="Mauna Loa CO₂ data (Keeling curve)")
+xlabel!("year")
+ylabel!("CO₂ (ppm)")
+```
+
+Now we try to 
+```julia
+plot!( years, CO₂.(years.-1850), lw=3 , 
+	label="Cubic Fit", legend=:topleft)
+title!("CO₂ observations and fit")
+```
