@@ -62,6 +62,7 @@ plot(solution, ylim=(-5,5), framestyle=:origin)
 ## The simplest climate model 
 
 Let's consider arguably the [simplest nontrivial climate model](https://computationalthinking.mit.edu/Spring21/our_first_climate_model/): 
+
 $$\begin{align*} 
 & \color{brown}{\text{change in heat content}} \newline
 &= \color{yellow}{\text{incoming solar radiation (energy from the Sun's rays)}} \newline 
@@ -164,7 +165,7 @@ plot(sol_only_in,
 
 ### Earth with outgoing radiation 🥶
 
-Let's move on and consider the $ \color{blue}{\text{outgoing thermal radiation}} $, i.e. the [black-body radiation](https://en.wikipedia.org/wiki/Black-body_radiation) which allows Earth to dissipate some of the heat. It is a complicated phenomenon, which we simplify by linearizing it and assuming that, together with the incoming radiation, the overall contribution to $D(\text{temp}(t))$ is equal to $B(\text{temp₀-temp(t)})$ for some $B$: 
+Let's move on and consider the $\color{blue}{\text{outgoing thermal radiation}}$, i.e. the [black-body radiation](https://en.wikipedia.org/wiki/Black-body_radiation) which allows Earth to dissipate some of the heat. It is a complicated phenomenon, which we simplify by linearizing it and assuming that, together with the incoming radiation, the overall contribution to $D(\text{temp}(t))$ is equal to $B(\text{temp₀-temp(t)})$ for some $B$: 
 ```julia
 @parameters B = 1.3 # "climate feedback parameter" in W/m^2/°C
 @named sys_in_and_out = ODESystem([
