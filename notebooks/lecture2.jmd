@@ -17,8 +17,8 @@ It's the language of [equations](https://en.wikipedia.org/wiki/Equation), namely
 What else can we say about how these equations usually look like?
 Usually, when modeling reality, we are interested in knowing what happens after some **time**, given some _initial conditions_.
 Our equations will likely be **functions of a time variable $t$**. 
-Moreover, it is tipically the case that, rather than being able to describe with an equation how the system look like at a certain time $t$, we only have hypotheses about **how the system changes** across time: 
-for example, we can rarely predict, a priori, where a moving mass will be located in space, but we can provide equations that approximate how the position of the mass will change from an instant to the next one.   
+Moreover, it is typically the case that, rather than being able to describe with an equation how the system look like at a certain time $t$, we only have hypotheses about **how the system changes** across time: 
+for example, we can rarely predict, a-priori, where a moving mass will be located in space, but we can provide equations that approximate how the position of the mass will change from an instant to the next one.   
 
 The equations describing how a function _changes_ are called [differential equations](https://en.wikipedia.org/wiki/Differential_equation). 
 
@@ -64,13 +64,97 @@ plot(solution, ylim=(-5,5), framestyle=:origin)
 Let's consider arguably the [simplest nontrivial climate model](https://computationalthinking.mit.edu/Spring21/our_first_climate_model/): 
 $$\begin{align*} 
 & \text{\color{brown}{change in heat content}} \newline
-&= \text{\color{orange}{absorbed solar radiation (energy from the Sun's rays)}} \newline 
+&= \text{\color{orange}{incoming solar radiation (energy from the Sun's rays)}} \newline 
 & \phantom{=} - \text{\color{blue}{outgoing thermal radiation (i.e. blackbody cooling to space)}} \newline 
 & \phantom{=} + \text{\color{grey}{human-caused greenhouse effect (trapped outgoing radiation)}}. 
 \end{align*}$$
 
 Each of the above terms should be intended as an average over the entire globe.
 
-### Absorbed vs outgoing radiation
+### Incoming radiation
 
-Let's address the first two terms. 
+Let's address the first term, $\text{\color{yellow}{incoming solar radiation}}$. 
+
+![](/images/planetary_energy_balance.png)
+
+The amount of energy that Earth receives from the Sun, i.e. Earth's [insolation](https://en.wikipedia.org/wiki/Solar_irradiance), is 
+```julia
+S = 1368 # measured in W/m^2  
+```
+Part of it is _reflected_ back to space. The measure of such effect is called [albedo](https://en.wikipedia.org/wiki/Albedo), and in Earth's case can be estimated to be
+```julia
+α = .3
+```
+Thus, out of the energy `S` that is received by the Sun, the fraction that it is retained is `1-α`. 
+
+There's another important correction that we should apply to the above measure of insolation. 
+
+![](/images/insolation.jpg)
+
+The above number `S` is estimated for a square meter of surface that lies _perpendicularly_ to the sunrays. 
+However, the Earth's surface is spherical. 
+What's the correction which would apply? 
+A disc of radius $R$ has area $\pi R^2$
+while a sphere of the same radius has area $4 \pi R^4$, so **there's a factor $\frac 14$** that should multiplay `S`.
+
+We then have that the incoming solar radiation on the r.h.s. of our starting equation is 
+```julia
+in_radiation = S*(1-α)/4;
+```
+
+### Earth without outgoing radiation
+
+Let's start by considering **only** the $\text{\color{yellow}{absorbed solar radiation}}$ and ignoring the other terms: 
+$$\begin{align*} 
+& \text{\color{brown}{change in heat content}} = \text{\color{orange}{incoming solar radiation}}
+\end{align*}$$
+
+We want to model the Earth's [temperature](https://en.wikipedia.org/wiki/Temperature) in this simple case: 
+```julia 
+@variables temp(t)
+```
+
+The equation above is about the [heat content](https://en.wikipedia.org/wiki/Heat) of the planet. 
+🤔 However, when we enter a swimming pool we don't care about the amount of heat stored in it, we care about the water's temperature, don't we? <!-- joke -->
+Recall that the temperature is given by the heat content divided by the [heat capacity](https://en.wikipedia.org/wiki/Heat#Heat_capacity) $C$, in other words
+$$
+\text{\color{brown}{change in heat content}} = (\text{\color{red}{change in temperature}}) \cdot C.
+$$
+Therefore, ignoring the greenhouse effect (**GHE**)
+$$\begin{align*} 
+& \text{\color{red}{change in temperature}} 
+= \frac 1C (\text{\color{orange}{incoming solar radiation}} ). 
+\end{align*}$$
+
+Hence, in order to estimate how much the _incoming radiation_ will influence the **temperature** of the Earth, 
+we need to have an estimate the [heat capacity of the atmosphere and upper-ocean](https://en.wikipedia.org/wiki/Earth%27s_energy_budget): 
+```julia
+@parameters C = 51. # J/m^2/°C 
+```
+
+We thus have the system
+```julia
+@named sys_without_GHE = ODESystem([ D(temp) ~ in_radiation / C ])
+```
+
+In order to define an `ODEProblem`, we also need an initial condition. 
+Let's assume that the time 0 of our equation corresponds to the year 1850, before the start of the [Second Industrial Revolution](https://en.wikipedia.org/wiki/Second_Industrial_Revolution); at the time, it is estimated that 
+```julia
+temp₀ = 14.0 # °C in 1850
+```
+
+We can now solve and plot the system: 
+```julia
+prob = ODEProblem(sys_without_GHE, [temp => temp₀], (0, 170))
+sol = solve(prob)
+
+plot(sol,
+	legend = false, 
+	xlabel = "Years since 1850",
+	ylabel = "°C")
+	hline!( [temp₀,temp₀], ls=:dash)
+	annotate!( 80, temp₀, 
+		text("Preindustrial Temperature = $(temp₀)°C",:bottom))
+	title!("Earth's temperature without GHE")
+```
+
