@@ -156,7 +156,7 @@ plot(sol_only_in,
 	legend = false, 
 	xlabel = "Years since 1850",
 	ylabel = "°C")
-	hline!( [temp₀,temp₀], ls=:dash)
+	hline!( [temp₀], ls=:dash)
 	annotate!( 80, temp₀, 
 		text("Preindustrial Temperature = $(temp₀)°C",:bottom))
 	title!("Earth's temperature without outgoing radiation")
@@ -182,7 +182,7 @@ plot(sol_in_and_out,
 	legend = false, 
 	xlabel = "Years after start",
 	ylabel = "°C")
-	hline!( [temp₀,temp₀], ls=:dash)
+	hline!( [temp₀], ls=:dash)
 	annotate!( 80, temp₀, 
 		text("Initial temperature = $(temp₀)°C",:bottom))
 	title!("Earth's temperature with outgoing radiation")
@@ -204,8 +204,8 @@ where $\text{CO}^{(\text{0})}_2$ is the initial value of the CO₂ level in the 
 
 Empirical data shows that 
 ```julia
-@parameters forcing_coef = 5.0 # W/m^2
-@parameters CO₂⁽⁰⁾ = 280. # pre-industrial CO₂ concentration, in ppm
+forcing_coef = 5.0 # W/m^2
+CO₂⁽⁰⁾ = 280. # pre-industrial CO₂ concentration, in ppm
 ```
 
 Our prediction of the Earth's temperature will depend on the amount of CO₂ emission; we thus need an hypothesis on the latter. 
@@ -234,9 +234,87 @@ xlabel!("year")
 ylabel!("CO₂ (ppm)")
 ```
 
-Now we try to 
+Looking at the data, we _guess_ that the CO₂ in the atmosphere follows the following function (given the current human behavior):
+```julia 
+CO₂(t) = CO₂⁽⁰⁾ * ( 1 + ((t-1850)/220)^3 ) 
+```
+
+We verify how much our guess overlaps with the data:
 ```julia
-plot!( years, CO₂.(years.-1850), lw=3 , 
+years = 1850:2022
+plot!( years, CO₂.(years), lw=3, 
 	label="Cubic Fit", legend=:topleft)
 title!("CO₂ observations and fit")
+```
+
+Our guess seems quite good. Let's use it to put the GHE together with the radiation absorbed by the sun, in a complete toy model.
+
+## A climate toy model 🌍
+
+Putting everything together we obtain the system
+```julia
+greenhouse_effect(CO₂) = forcing_coef * log(CO₂/CO₂⁽⁰⁾)
+
+@named sys_climate = ODESystem([
+		D(temp) ~ (1/C)*( B*(temp₀-temp) + greenhouse_effect(CO₂(t)) )
+	])
+```
+
+How fast will the system heat up? 
+```julia
+using LaTeXStrings # used in `plot` in `label` property
+
+init_condition = [temp => temp₀]
+years = (1850, 2022)
+params = [C => 51, B => 1.3]
+
+prob_climate = ODEProblem(sys_climate, init_condition, years, params)
+sol_climate = solve(prob_climate)
+
+plot(sol_climate,
+	xlabel = "Years after start",
+	ylabel = "°C", 
+	ylim = (10, 20), 
+	label = L"B=1.3, C=51")
+
+	hline!( [temp₀], ls=:dash, label=nothing)
+	annotate!( 1900, temp₀-.8, 
+		text("Initial temperature = $(temp₀)°C",:bottom))
+	title!("Earth's temperature in our toy climate model")
+```
+
+The variables `C` (heat capacity) and `B` (feedback parameter) are `parameters` of ModelingToolkit, meaning that we can try out different values for them, and add some information to the plot:
+```julia
+parameters2 = [C => 20, B => 0.6]
+
+prob_climate2 = ODEProblem(sys_climate, init_condition, years, parameters)
+sol_climate2 = solve(prob_climate2)
+
+plot!(sol_climate,
+	xlabel = "Years after start",
+	ylabel = "°C", 
+	ylim = (10, 20),
+	label = L"B=0.6, C=20")
+
+	hline!( [16], ls=:dash, label=nothing)
+	annotate!( 1930, 16, 
+		text("Paris Agreement threshold (2°C warming)", :bottom))
+```
+
+### Testing our model 📈
+
+Similarly to what we have done to check our guess for the `CO₂` evolution, we can test our overall model against [historical data from NASA](https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt):
+```julia
+T_url = "https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt";
+T_df = CSV.read(download(T_url), DataFrame, header=3, skipto=5, delim=" ", ignorerepeated=true);
+T_df[1:6, :]
+```
+
+Let's check our solution `sol_climate`:
+```julia
+	plot(years,solp4.(years.-1850),lw=2,label="Temperature predette dal modello", legend=:topleft)
+	xlabel!("Anno")
+	ylabel!("Temp °C")
+	
+	plot!( T_df[:,1], T_df[:,2] .+ 14.15, color=:black, label="Osservazioni della NASA", legend=:topleft)
 ```
