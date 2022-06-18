@@ -64,7 +64,7 @@ plot(solution, ylim=(-5,5), framestyle=:origin)
 Let's consider arguably the [simplest nontrivial climate model](https://computationalthinking.mit.edu/Spring21/our_first_climate_model/): 
 $$\begin{align*} 
 & \text{\color{brown}{change in heat content}} \newline
-&= \text{\color{orange}{incoming solar radiation (energy from the Sun's rays)}} \newline 
+&= \text{\color{yellow}{incoming solar radiation (energy from the Sun's rays)}} \newline 
 & \phantom{=} - \text{\color{blue}{outgoing thermal radiation (i.e. blackbody cooling to space)}} \newline 
 & \phantom{=} + \text{\color{grey}{human-caused greenhouse effect (trapped outgoing radiation)}}. 
 \end{align*}$$
@@ -104,9 +104,9 @@ in_radiation = S*(1-α)/4;
 
 ### Earth without outgoing radiation
 
-Let's start by considering **only** the $\text{\color{yellow}{absorbed solar radiation}}$ and ignoring the other terms: 
+Let's start by considering **only** the $\text{\color{yellow}{incoming solar radiation}}$ and ignoring the other terms: 
 $$\begin{align*} 
-& \text{\color{brown}{change in heat content}} = \text{\color{orange}{incoming solar radiation}}
+& \text{\color{brown}{change in heat content}} = \text{\color{yellow}{incoming solar radiation}}
 \end{align*}$$
 
 We want to model the Earth's [temperature](https://en.wikipedia.org/wiki/Temperature) in this simple case: 
@@ -120,10 +120,10 @@ Recall that the temperature is given by the heat content divided by the [heat ca
 $$
 \text{\color{brown}{change in heat content}} = (\text{\color{red}{change in temperature}}) \cdot C.
 $$
-Therefore, ignoring the greenhouse effect (**GHE**)
+Therefore
 $$\begin{align*} 
 & \text{\color{red}{change in temperature}} 
-= \frac 1C (\text{\color{orange}{incoming solar radiation}} ). 
+= \frac 1C (\text{\color{yellow}{incoming solar radiation}} ). 
 \end{align*}$$
 
 Hence, in order to estimate how much the _incoming radiation_ will influence the **temperature** of the Earth, 
@@ -134,27 +134,61 @@ we need to have an estimate the [heat capacity of the atmosphere and upper-ocean
 
 We thus have the system
 ```julia
-@named sys_without_GHE = ODESystem([ D(temp) ~ in_radiation / C ])
+@named sys_only_in = ODESystem([ D(temp) ~ in_radiation / C ])
 ```
 
 In order to define an `ODEProblem`, we also need an initial condition. 
 Let's assume that the time 0 of our equation corresponds to the year 1850, before the start of the [Second Industrial Revolution](https://en.wikipedia.org/wiki/Second_Industrial_Revolution); at the time, it is estimated that 
 ```julia
 temp₀ = 14.0 # °C in 1850
+init_condition = [temp => temp₀]
 ```
 
-We can now solve and plot the system: 
+We can now solve system: 
 ```julia
-prob = ODEProblem(sys_without_GHE, [temp => temp₀], (0, 170))
-sol = solve(prob)
+prob_only_in = ODEProblem(sys_only_in, init_condition, (0, 170))
+sol_only_in = solve(prob_only_in)
+```
 
-plot(sol,
+How does the solution look like? Let's plot it:
+```julia
+plot(sol_only_in,
 	legend = false, 
 	xlabel = "Years since 1850",
 	ylabel = "°C")
 	hline!( [temp₀,temp₀], ls=:dash)
 	annotate!( 80, temp₀, 
 		text("Preindustrial Temperature = $(temp₀)°C",:bottom))
-	title!("Earth's temperature without GHE")
+	title!("Earth's temperature without outgoing radiation")
 ```
 
+### Earth with outgoing radiation 
+
+Let's move on and consider the $ \text{\color{blue}{outgoing thermal radiation}} $, i.e. the [black-body radiation](https://en.wikipedia.org/wiki/Black-body_radiation) which allows Earth to dissipate some of the heat. It is a complicated phenomenon, which we simplify by linearizing it and assuming that, together with the incoming radiation, the overall contribution to $D(\text{temp}(t))$ is equal to $B(\text{temp₀-temp(t)})$ for some $B$: 
+```julia
+@parameters B = 1.3 # "climate feedback parameter" in W/m^2/°C
+@named sys_in_and_out = ODESystem([
+		D(temp) ~ B*(temp₀-temp)/C
+	])
+```
+
+This time Earth can cool down. Let's solve the problem assuming that the initial temperature is higher, e.g. 20 °C, and plot the solution: 
+```julia
+init_condition = [temp => 20]
+prob_in_and_out = ODEProblem(sys_in_and_out, init_condition, (0, 170))
+sol_in_and_out = solve(prob_in_and_out)
+
+plot(sol_in_and_out,
+	legend = false, 
+	xlabel = "Years after start",
+	ylabel = "°C")
+	hline!( [temp₀,temp₀], ls=:dash)
+	annotate!( 80, temp₀, 
+		text("Initial temperature = $(temp₀)°C",:bottom))
+	title!("Earth's temperature with outgoing radiation")
+```
+
+😲 Wow!
+Unfortunately we are still ignoring one term of our initial equation...
+
+## The infamous Greenhouse effect
