@@ -63,17 +63,17 @@ plot(solution, ylim=(-5,5), framestyle=:origin)
 
 Let's consider arguably the [simplest nontrivial climate model](https://computationalthinking.mit.edu/Spring21/our_first_climate_model/): 
 $$\begin{align*} 
-& \text{\color{brown}{change in heat content}} \newline
-&= \text{\color{yellow}{incoming solar radiation (energy from the Sun's rays)}} \newline 
-& \phantom{=} - \text{\color{blue}{outgoing thermal radiation (i.e. blackbody cooling to space)}} \newline 
-& \phantom{=} + \text{\color{grey}{human-caused greenhouse effect (trapped outgoing radiation)}}. 
+& \color{brown}{\text{change in heat content}} \newline
+&= \color{yellow}{\text{incoming solar radiation (energy from the Sun's rays)}} \newline 
+& \phantom{=} - \color{blue}{\text{outgoing thermal radiation (i.e. blackbody cooling to space)}} \newline 
+& \phantom{=} + \color{grey}{\text{human-caused greenhouse effect (trapped outgoing radiation)}}. 
 \end{align*}$$
 
 Each of the above terms should be intended as an average over the entire globe.
 
 ### Incoming radiation ☀️
 
-Let's address the first term, $\text{\color{yellow}{incoming solar radiation}}$. 
+Let's address the first term, $\color{yellow}{\text{incoming solar radiation}}$. 
 
 ![](/images/planetary_energy_balance.png)
 
@@ -104,9 +104,9 @@ in_radiation = S*(1-α)/4;
 
 ### Earth without outgoing radiation 🔥
 
-Let's start by considering **only** the $\text{\color{yellow}{incoming solar radiation}}$ and ignoring the other terms: 
+Let's start by considering **only** the $\color{yellow}{\text{incoming solar radiation}}$ and ignoring the other terms: 
 $$\begin{align*} 
-& \text{\color{brown}{change in heat content}} = \text{\color{yellow}{incoming solar radiation}}
+& \color{brown}{\text{change in heat content}} = \color{yellow}{\text{incoming solar radiation}}
 \end{align*}$$
 
 We want to model the Earth's [temperature](https://en.wikipedia.org/wiki/Temperature) in this simple case: 
@@ -118,12 +118,12 @@ The equation above is about the [heat content](https://en.wikipedia.org/wiki/Hea
 🤔 However, when we enter a swimming pool we don't care about the amount of heat stored in it, we care about the water's temperature, don't we? <!-- joke -->
 Recall that the temperature is given by the heat content divided by the [heat capacity](https://en.wikipedia.org/wiki/Heat#Heat_capacity) $C$, in other words
 $$
-\text{\color{brown}{change in heat content}} = (\text{\color{red}{change in temperature}}) \cdot C.
+\color{brown}{\text{change in heat content}} = (\color{red}{\text{change in temperature}}) \cdot C.
 $$
 Therefore
 $$\begin{align*} 
-& \text{\color{red}{change in temperature}} 
-= \frac 1C (\text{\color{yellow}{incoming solar radiation}} ). 
+& \color{red}{\text{change in temperature}} 
+= \frac 1C (\color{yellow}{\text{incoming solar radiation}} ). 
 \end{align*}$$
 
 Hence, in order to estimate how much the _incoming radiation_ will influence the **temperature** of the Earth, 
@@ -164,7 +164,7 @@ plot(sol_only_in,
 
 ### Earth with outgoing radiation 🥶
 
-Let's move on and consider the $ \text{\color{blue}{outgoing thermal radiation}} $, i.e. the [black-body radiation](https://en.wikipedia.org/wiki/Black-body_radiation) which allows Earth to dissipate some of the heat. It is a complicated phenomenon, which we simplify by linearizing it and assuming that, together with the incoming radiation, the overall contribution to $D(\text{temp}(t))$ is equal to $B(\text{temp₀-temp(t)})$ for some $B$: 
+Let's move on and consider the $ \color{blue}{\text{outgoing thermal radiation}} $, i.e. the [black-body radiation](https://en.wikipedia.org/wiki/Black-body_radiation) which allows Earth to dissipate some of the heat. It is a complicated phenomenon, which we simplify by linearizing it and assuming that, together with the incoming radiation, the overall contribution to $D(\text{temp}(t))$ is equal to $B(\text{temp₀-temp(t)})$ for some $B$: 
 ```julia
 @parameters B = 1.3 # "climate feedback parameter" in W/m^2/°C
 @named sys_in_and_out = ODESystem([
@@ -196,7 +196,7 @@ Unfortunately we are still ignoring one term of our initial equation...
 The [greenhouse effect](https://en.wikipedia.org/wiki/Greenhouse_effect) can be modeled by the equation
 $$
 \begin{align*}
-	\text{\color{grey}{human-caused greenhouse effect (trapped outgoing radiation)}} \newline 
+	\color{grey}{\text{human-caused greenhouse effect (trapped outgoing radiation)}} \newline 
 	= \text{forcing\_coefficient} \cdot \ln \left(\frac {\text{CO}_2}{\text{CO}^{(\text{0})}_2}\right),
 \end{align*}
 $$
