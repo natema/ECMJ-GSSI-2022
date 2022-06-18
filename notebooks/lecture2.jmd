@@ -312,9 +312,9 @@ T_df[1:6, :]
 
 Let's check our solution `sol_climate`:
 ```julia
-	plot(years,solp4.(years.-1850),lw=2,label="Temperature predette dal modello", legend=:topleft)
-	xlabel!("Anno")
-	ylabel!("Temp °C")
+	plot(sol_climate[t], sol_climate[temp], lw=2, label="Temperatures predicted by the model", legend=:topleft)
+	xlabel!("Year")
+	ylabel!("Temperature (°C)")
 	
-	plot!( T_df[:,1], T_df[:,2] .+ 14.15, color=:black, label="Osservazioni della NASA", legend=:topleft)
+	plot!( T_df[:,1], T_df[:,2] .+ 14.15, color=:black, label="Observations by NASA", legend=:topleft)
 ```
