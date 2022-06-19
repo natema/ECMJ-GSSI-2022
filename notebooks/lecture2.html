@@ -757,14 +757,14 @@ u: 7-element Vector&#123;Vector&#123;Float64&#125;&#125;:
 <p class="math">\[
 \begin{align*} 
 & \color{brown}{\text{change in heat content}} \newline
-&= \color{yellow}{\text{incoming solar radiation (energy from the Sun's rays)}} \newline 
+&= \color{orange}{\text{incoming solar radiation (energy from the Sun's rays)}} \newline 
 & \phantom{=} - \color{blue}{\text{outgoing thermal radiation (i.e. blackbody cooling to space)}} \newline 
 & \phantom{=} + \color{grey}{\text{human-caused greenhouse effect (trapped outgoing radiation)}}. 
 \end{align*}
 \]</p>
 <p>Each of the above terms should be intended as an average over the entire globe.</p>
 <h3>Incoming radiation ☀️</h3>
-<p>Let&#39;s address the first term, <span class="math">$\color{yellow}{\text{incoming solar radiation}}$</span>. </p>
+<p>Let&#39;s address the first term, <span class="math">$\color{orange}{\text{incoming solar radiation}}$</span>. </p>
 <p><img src="/images/planetary_energy_balance.png" alt="" /></p>
 <p>The amount of energy that Earth receives from the Sun, i.e. Earth&#39;s <a href="https://en.wikipedia.org/wiki/Solar_irradiance">insolation</a>, is </p>
 
@@ -806,7 +806,7 @@ u: 7-element Vector&#123;Vector&#123;Float64&#125;&#125;:
 
 
 <h3>Earth without outgoing radiation 🔥</h3>
-<p>Let&#39;s start by considering <strong>only</strong> the <span class="math">$\color{yellow}{\text{incoming solar radiation}}$</span> and ignoring the other terms:  <span class="math">$\begin{align*}  & \color{brown}{\text{change in heat content}} = \color{yellow}{\text{incoming solar radiation}} \end{align*}$</span></p>
+<p>Let&#39;s start by considering <strong>only</strong> the <span class="math">$\color{orange}{\text{incoming solar radiation}}$</span> and ignoring the other terms:  <span class="math">$\begin{align*}  & \color{brown}{\text{change in heat content}} = \color{orange}{\text{incoming solar radiation}} \end{align*}$</span></p>
 <p>We want to model the Earth&#39;s <a href="https://en.wikipedia.org/wiki/Temperature">temperature</a> in this simple case: </p>
 
 
@@ -825,7 +825,7 @@ u: 7-element Vector&#123;Vector&#123;Float64&#125;&#125;:
 <p class="math">\[
 \color{brown}{\text{change in heat content}} = (\color{red}{\text{change in temperature}}) \cdot C.
 \]</p>
-<p>Therefore <span class="math">$\begin{align*}  & \color{red}{\text{change in temperature}}  = \frac 1C (\color{yellow}{\text{incoming solar radiation}} ).  \end{align*}$</span></p>
+<p>Therefore <span class="math">$\begin{align*}  & \color{red}{\text{change in temperature}}  = \frac 1C (\color{orange}{\text{incoming solar radiation}} ).  \end{align*}$</span></p>
 <p>Hence, in order to estimate how much the <em>incoming radiation</em> will influence the <strong>temperature</strong> of the Earth,  we need to have an estimate the <a href="https://en.wikipedia.org/wiki/Earth&#37;27s_energy_budget">heat capacity of the atmosphere and upper-ocean</a>: </p>
 
 

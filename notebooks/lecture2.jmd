@@ -65,7 +65,7 @@ Let's consider arguably the [simplest nontrivial climate model](https://computat
 
 $$\begin{align*} 
 & \color{brown}{\text{change in heat content}} \newline
-&= \color{yellow}{\text{incoming solar radiation (energy from the Sun's rays)}} \newline 
+&= \color{orange}{\text{incoming solar radiation (energy from the Sun's rays)}} \newline 
 & \phantom{=} - \color{blue}{\text{outgoing thermal radiation (i.e. blackbody cooling to space)}} \newline 
 & \phantom{=} + \color{grey}{\text{human-caused greenhouse effect (trapped outgoing radiation)}}. 
 \end{align*}$$
@@ -74,7 +74,7 @@ Each of the above terms should be intended as an average over the entire globe.
 
 ### Incoming radiation ☀️
 
-Let's address the first term, $\color{yellow}{\text{incoming solar radiation}}$. 
+Let's address the first term, $\color{orange}{\text{incoming solar radiation}}$. 
 
 ![](/images/planetary_energy_balance.png)
 
@@ -105,9 +105,9 @@ in_radiation = S*(1-α)/4;
 
 ### Earth without outgoing radiation 🔥
 
-Let's start by considering **only** the $\color{yellow}{\text{incoming solar radiation}}$ and ignoring the other terms: 
+Let's start by considering **only** the $\color{orange}{\text{incoming solar radiation}}$ and ignoring the other terms: 
 $$\begin{align*} 
-& \color{brown}{\text{change in heat content}} = \color{yellow}{\text{incoming solar radiation}}
+& \color{brown}{\text{change in heat content}} = \color{orange}{\text{incoming solar radiation}}
 \end{align*}$$
 
 We want to model the Earth's [temperature](https://en.wikipedia.org/wiki/Temperature) in this simple case: 
@@ -124,7 +124,7 @@ $$
 Therefore
 $$\begin{align*} 
 & \color{red}{\text{change in temperature}} 
-= \frac 1C (\color{yellow}{\text{incoming solar radiation}} ). 
+= \frac 1C (\color{orange}{\text{incoming solar radiation}} ). 
 \end{align*}$$
 
 Hence, in order to estimate how much the _incoming radiation_ will influence the **temperature** of the Earth, 
