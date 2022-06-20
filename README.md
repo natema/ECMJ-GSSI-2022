@@ -8,9 +8,9 @@ Lecture material for the course [Elements of Computational Modeling in Julia, GS
 - What are important examples of past simulations? 
 
 ## Lectures
-- [Lecture 1](/ECMJ-GSSI-2022/notebooks/lecture1)
-- [Lecture 2](/ECMJ-GSSI-2022/notebooks/lecture2)
-- [Lecture 3](/ECMJ-GSSI-2022/notebooks/lecture3)
+- [Lecture 1](/ECMJ-GSSI-2022/notebooks/lecture1): Intro
+- [Lecture 2](/ECMJ-GSSI-2022/notebooks/lecture2): A simple climate model
+- [Lecture 3](/ECMJ-GSSI-2022/notebooks/lecture3): A famous simulation
 - [Lecture 4](/ECMJ-GSSI-2022/notebooks/lecture4)
 
 
