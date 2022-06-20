@@ -288,7 +288,7 @@ The variables `C` (heat capacity) and `B` (feedback parameter) are `parameters` 
 ```julia
 parameters2 = [C => 20, B => 0.6]
 
-prob_climate2 = ODEProblem(sys_climate, init_condition, years, parameters)
+prob_climate2 = ODEProblem(sys_climate, init_condition, years, parameters2)
 sol_climate2 = solve(prob_climate2)
 
 plot!(sol_climate2,
