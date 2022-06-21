@@ -30,8 +30,6 @@ The model was called
 World3 was developed in 1972. That's the same year the [C language](https://en.wikipedia.org/wiki/C_(programming_language)) first appeared. 
 Indeed, the language used for World3 is a now-dead language [DYNAMO](https://en.wikipedia.org/wiki/DYNAMO_(programming_language)), created under Forrester's direction. 
 
-![](/ECMJ-GSSI-2022/images/dynamousersmanual.jpg)
-
 Essentially, World3 consist of a  discrete-time dynamical system that can be regarded as the [Euler method](https://en.wikipedia.org/wiki/Euler_method) discretization of a continuous-time system. 
 The book with the source code is [accessible on archive.org](https://archive.org/details/dynamicsofgrowth0000unse).
 Here is a diagram of the whole system, were nodes represent variables and edges represent some dependency between the two variables: 
