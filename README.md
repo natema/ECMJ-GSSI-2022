@@ -11,7 +11,7 @@ Lecture material for the course [Elements of Computational Modeling in Julia, GS
 - [Lecture 1](/ECMJ-GSSI-2022/notebooks/lecture1): Intro
 - [Lecture 2](/ECMJ-GSSI-2022/notebooks/lecture2): A simple climate model
 - [Lecture 3](/ECMJ-GSSI-2022/notebooks/lecture3): A famous simulation
-- [Lecture 4](/ECMJ-GSSI-2022/notebooks/lecture4)
+- [Lecture 4](/ECMJ-GSSI-2022/notebooks/lecture4): A simple epidemic model
 
 
 ----
