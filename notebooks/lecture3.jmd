@@ -15,6 +15,7 @@ He and the then Director-General for Scientific Affairs at the [OECD (Organisati
 ### The Limits to Growth
 
 In 1972 [Donella H. Meadows](https://en.wikipedia.org/wiki/Donella_Meadows), [Dennis L. Meadows](https://en.wikipedia.org/wiki/Dennis_Meadows), [Jørgen Randers](https://en.wikipedia.org/wiki/J%C3%B8rgen_Randers) and William W. Behrens III, representing a team of 17 researchers, published a report on the exponential economic and population growth with a finite supply of resources, titled [The Limits to Growth](https://en.wikipedia.org/wiki/The_Limits_to_Growth).
+Several other reports followed in the subsequent decades (see the references at the end of these notes).
 
 ![](/images/LtG_all.png)
 
@@ -27,4 +28,33 @@ The model was called
 ## World3
 
 World3 was developed in 1972. That's the same year the [C language](https://en.wikipedia.org/wiki/C_(programming_language)) first appeared. 
-Indeed, the language used for World3 is a now-dead language [DYNAMO](https://en.wikipedia.org/wiki/DYNAMO_(programming_language))
+Indeed, the language used for World3 is a now-dead language [DYNAMO](https://en.wikipedia.org/wiki/DYNAMO_(programming_language)), created under Forrester's direction. 
+
+![](/images/dynamousersmanual.jpg)
+
+Essentially, World3 consist of a  discrete-time dynamical system that can be regarded as the [Euler method](https://en.wikipedia.org/wiki/Euler_method) discretization of a continuous-time system. 
+The book with the source code is [accessible on archive.org](https://archive.org/details/dynamicsofgrowth0000unse).
+Here is a diagram of the whole system, were nodes represent variables and edges represent some dependency between the two variables: 
+
+![](/images/worl3_system.png)
+
+Bearing in mind that this simulation was conducted in the 60s, when the C language didn't even exist and computational resources were extremely limited, 
+we notice that the Euler method, which is the simplest method to discretize a differential equation, has several shortcomings, and the performed simulation considered a time-step of **5 years**. 
+
+Subsequent works re-implemented it using simulation-oriented programming languages such as [STELLA](https://en.wikipedia.org/wiki/STELLA_(programming_language)) and [Modelica](https://en.wikipedia.org/wiki/Modelica). 
+Research has also been conducted to investigate the system's [sensitivity](https://en.wikipedia.org/wiki/Sensitivity_analysis), among other aspects (see e.g. [Thissen]). 
+
+## References
+
+### _Limits to Growth_ books
+
+- **[LoG1]**. Meadows Donella H. The Limits to Growth. Brown Spots on Pages edition. Universe Books, 1972.
+- **[LoG2]**. Meadows, Donella H., Dennis L. Meadows, and Jorgen Randers. Beyond the Limits: Confronting Global Collapse, Envisioning a Sustainable Future. Vermont: Chelsea Green Pub Co, 1993.
+- **[LoG3]**. Meadows, Donella H., Jorgen Randers, and Dennis L. Meadows. Limits to Growth: The 30-Year Update. Illustrated edition. White River Junction, Vt: Chelsea Green Publishing, 2004.
+- **[LoG4]**. Bardi, Ugo. Limits and Beyond: 50 Years on from The Limits to Growth, What Did We Learn and What’s next? Edited by Carlos Alvarez Pereira. Verlagsort nicht ermittelbar: Exapt Press, 2022.
+
+### Other articles 
+
+- **[Thissen]**. Thissen, W.A.H. “Investigations into the Club of Rome’s World3 Model : Lessons for Understanding Complicated Models.” Phd Thesis 1 (Research TU/e / Graduation TU/e), Technische Hogeschool Eindhoven, 1978. https://doi.org/10.6100/IR79372.
+
+
