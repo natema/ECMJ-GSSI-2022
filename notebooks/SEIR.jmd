@@ -1,3 +1,14 @@
 ## [Back to the syllabus](/ECMJ-GSSI-2022/README)
 
 # ECMJ: A simple epidemic model
+
+The following lecture is based on the notebook [Modeling COVID 19 with Differential Equations](https://julia.quantecon.org/continuous_time/seir_model.html) which is licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA). 
+The present work is protected by the same license.  
+
+![](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)
+
+The purpose of this note is to present a simple model of infections disease dynamics, by using ordinary differential equations. 
+
+## The SEIR model
+
+We are going to investigate the [Susceptible-Exposed-Infected-Removed (SEIR)](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SEIR_model)
