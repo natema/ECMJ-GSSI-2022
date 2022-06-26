@@ -14,10 +14,71 @@ We will focus primarily on studying the following aspects:
 - the number of infections at a given time (which determines whether or not the health care system is overwhelmed), and  
 - how long the caseload can be deferred (hopefully, until a vaccine is being deployed). 
 
+### Set up 
+
+We will need the following packages: 
+```julia
+using LaTeXStrings, LinearAlgebra, Random, SparseArrays, Statistics
+using Parameters, Plots
+using OrdinaryDiffEq
+```
+The last package is the [Ordinary Differential Equations](https://diffeq.sciml.ai/dev/tutorials/ode_example/) package within the [SciML ecosystem](https://github.com/SciML/).
+
 ## The SEIR model
 
 We are going to investigate the [Susceptible-Exposed-Infected-Removed (SEIR)](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SEIR_model)
 
+In the SEIR model, all individuals in the population are assumed to be in one out of four possible states:
+- susceptible (S), 
+- exposed (E), 
+- infected (I) and 
+- removed (R).
+
+Some comments are in order:
+- Those in state R have been infected and either recovered or died.  Note that in some variations, R may refer only to recovered agents.  
+- Those who have recovered, and live, are assumed to have acquired immunity.  
+- Those in the exposed group are not yet infectious.  
+
+This type of [compartmentalized model](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#Elaborations_on_the_basic_SIR_model)  has many extensions (e.g. SEIRS relaxes lifetime immunity and allow transitions from $ R \to S $).
+
+### Changes in the Infected State
+
+During our time horizon, we will ignore birth and death due to other causes, and assume a large, constant, number of individuals of size $ N $ throughout.
+
+With this, the symbols $ S, E, I, R $ are used for the total number of individuals in each state at each point in time, and $ S(t) + E(t) + I(t) + R(t) = N $ for all $ t $.
+
+Since we have  assumed that $ N $ is large, we can use a continuum approximation for the number of individuals in each state.
+
+The state of the agents can change.
+
+The transitions between states happens only in one direction: $ S \to E \to I \to R $, 
+and are governed by the following rates:
+- $ \beta(t) $ is called the *transmission rate* (the rate at which individuals bump into others and expose them to the virus);
+- $ \sigma $ is called the *infection rate* (the rate at which those who are exposed become infected);.u
+- $ \gamma $ is called the *recovery rate* (the rate at which infected people recover or die).
+
+
+The SEIR model can then be written as
+$$
+\begin{aligned}
+     \frac{d S}{d t}  & = - \beta \, S \,  \frac{I}{N}
+     \\
+     \frac{d E}{d t}   & = \beta \, S \,   \frac{I}{N}  - \sigma E
+     \\
+      \frac{d I}{d t}  & = \sigma  E  - \gamma I
+     \\
+      \frac{d R}{d t}  & = \gamma  I
+\end{aligned}
+$$
+
+Here, $ dy/dt $ represents the time derivative for the particular variable.
+
+The first term of [(41.1)](#equation-seir-system-big), $ -\beta \, S \,  \frac{I}{N} $, is the flow of individuals moving from $ S \to E $, and highlights the underlying dynamics of the epidemic
+
+- Individuals in the susceptible state (S) have a rate $ \beta(t) $ of prolonged contacts with other individuals where transmission would occur if either was infected  
+- Of these contacts, a fraction $ \frac{I(t)}{N} $ will be with infected agents (since we assumed that exposed individuals are not yet infectious)  
+- Finally, there are $ S(t) $ susceptible individuals.  
+- The sign indicates that the product of those terms is the outflow from the $ S $ state, and an inflow to the $ E $ state.  
 
 ## References
 
