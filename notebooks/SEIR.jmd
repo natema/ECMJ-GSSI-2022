@@ -9,6 +9,20 @@ The present work is protected by the same license.
 
 The purpose of this note is to present a simple model of infections disease dynamics, by using ordinary differential equations. 
 
+We will focus primarily on studying the following aspects:
+- the impact of suppression through social distancing on the spread of the infection,
+- the number of infections at a given time (which determines whether or not the health care system is overwhelmed), and  
+- how long the caseload can be deferred (hopefully, until a vaccine is being deployed). 
+
 ## The SEIR model
 
 We are going to investigate the [Susceptible-Exposed-Infected-Removed (SEIR)](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SEIR_model)
+
+
+## References
+
+- The notebook [Modeling COVID 19 with Differential Equations](https://julia.quantecon.org/continuous_time/seir_model.html) credited at the beginning of this work. 
+- Notes from [Andrew Atkeson](https://sites.google.com/site/andyatkeson/) and [NBER Working Paper No. 26867](https://www.nber.org/papers/w26867).
+- [Estimating and Forecasting Disease Scenarios for COVID-19 with an SIR Model](https://www.nber.org/papers/w27335) by Andrew Atkeson, Karen Kopecky and Tao Zha.
+- [Estimating and Simulating a SIRD Model of COVID-19 for Many Countries, States, and Cities](https://www.nber.org/papers/w27128) by Jesús Fernández-Villaverde and Charles I. Jones.
+- Further variations on the classic SIR model in Julia  [here](https://github.com/epirecipes/sir-julia).
