@@ -18,8 +18,19 @@ Lecture material for the course [Elements of Computational Modeling in Julia, GS
 - [A simple climate model](/ECMJ-GSSI-2022/notebooks/simple_climate)
 
 - (QuantEcon by Perla & Sargent & Stachurski) [A simple epidemic model](https://julia.quantecon.org/continuous_time/seir_model.html)
-- (QuantEcon by Perla & Sargent & Stachurski) [A less simple epidemic model](https://julia.quantecon.org/continuous_time/covid_sde.html)
+- (ibid.) [A less simple epidemic model](https://julia.quantecon.org/continuous_time/covid_sde.html)
 
+- (SciML by Rackauckas) [Physics-Informed Neural Networks](https://book.sciml.ai/notes/03/)
+- (SciML by Rackauckas) [Discrete Dynamics](https://book.sciml.ai/notes/04/)
+- (SciML by Rackauckas) [Ordinary Differential Equations](https://book.sciml.ai/notes/07/)
+- (SciML by Rackauckas) [Forward-Mode Automatic Differentiation](https://book.sciml.ai/notes/08/)
+- (SciML by Rackauckas) [Stiff Ordinary Differential Equations](https://book.sciml.ai/notes/09/)
+- (SciML by Rackauckas) [Reverse-Mode AD](https://book.sciml.ai/notes/10/)
+- (SciML by Rackauckas) [Differentiable Programming](https://book.sciml.ai/notes/11/)
+- (SciML by Rackauckas) [Physics-Informed Learning](https://book.sciml.ai/notes/15/)
+- (SciML by Rackauckas) [Probabilistic Programming](https://book.sciml.ai/notes/16/)
+- (SciML by Rackauckas) [Global Sensitivity Analysis](https://book.sciml.ai/notes/17/)
+- (SciML by Rackauckas) [Uncertainty Programming](https://book.sciml.ai/notes/19/)
 
 ----
 
