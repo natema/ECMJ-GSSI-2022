@@ -17,13 +17,14 @@ Lecture material for the course [Elements of Computational Modeling in Julia, GS
 
 - [A simple climate model](/ECMJ-GSSI-2022/notebooks/simple_climate)
 
-- (QuantEcon by Perla & Sargent & Stachurski) [A simple epidemic model](https://julia.quantecon.org/continuous_time/seir_model.html)
-- (ibid.) [A less simple epidemic model](https://julia.quantecon.org/continuous_time/covid_sde.html)
-
 - (SciML by Rackauckas) [Physics-Informed Neural Networks](https://book.sciml.ai/notes/03/)
 - (ibid.) [Discrete Dynamics](https://book.sciml.ai/notes/04/)
 - (ibid.) [Ordinary Differential Equations](https://book.sciml.ai/notes/07/)
 - (ibid.) [Forward-Mode Automatic Differentiation](https://book.sciml.ai/notes/08/)
+
+- (QuantEcon by Perla & Sargent & Stachurski) [A simple epidemic model](https://julia.quantecon.org/continuous_time/seir_model.html)
+- (ibid.) [A less simple epidemic model](https://julia.quantecon.org/continuous_time/covid_sde.html)
+
 - (ibid.) [Stiff Ordinary Differential Equations](https://book.sciml.ai/notes/09/)
 - (ibid.) [Reverse-Mode AD](https://book.sciml.ai/notes/10/)
 - (ibid.) [Differentiable Programming](https://book.sciml.ai/notes/11/)
