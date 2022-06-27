@@ -111,16 +111,15 @@ The first term of [(41.1)](#equation-seir-system-big), $ -\beta \, S \,  \frac{I
 
 ### Basic Reproduction Number
 
-If $ \beta $ was constant, then we could define $ R_0 := \beta / \gamma $.  This is the famous *basic reproduction number* for the SEIR model.  See [[HSW05](https://julia.quantecon.org/../zreferences.html#id5)] for more details.
+If $ \beta $ was constant, then we could define $ R_0 := \beta / \gamma $.  This is the famous *basic reproduction number* for the SEIR model.  See [HSW05](https://julia.quantecon.org/../zreferences.html#id5)] for more details.
 
-When the transmission rate is time-varying, we will follow notation in [[FVJ20](https://julia.quantecon.org/../zreferences.html#id6)] and refer to $ R_0(t) $ as a time-varying version of the basic reproduction number.
+When the transmission rate is time-varying, we will follow notation in [FVJ20](https://julia.quantecon.org/../zreferences.html#id6)] and refer to $ R_0(t) $ as a time-varying version of the basic reproduction number.
 
 Analyzing the system in [(41.1)](#equation-seir-system-big) provides some intuition on the $ R_0(t) := \beta(t) / \gamma $ expression:
 
 - Individual transitions from the infected to removed state occur at a Poisson rate $ \gamma $, the expected time in the infected state is $ 1/\gamma $  
 - Prolonged interactions occur at rate $ \beta $, so a new individual entering the infected state will potentially transmit the virus to an average of $ R_0 = \beta \times 1 / \gamma $ others  
-- In more complicated models, see [[HSW05](https://julia.quantecon.org/../zreferences.html#id5)] for a formal definition for arbitrary models, and an analysis on the role of $ R_0 < 1 $.  
-
+- In more complicated models, see [HSW05](https://julia.quantecon.org/../zreferences.html#id5)] for a formal definition for arbitrary models, and an analysis on the role of $ R_0 < 1 $.  
 
 Note that the notation $ R_0 $ is standard in the epidemiology literature - though confusing, since $ R_0 $ is unrelated to $ R $, the symbol that represents the removed state.  For the remainder of the lecture, we will avoid using $ R $ for removed state.
 
