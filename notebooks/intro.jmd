@@ -10,7 +10,6 @@
 
 In this course we'll confront the fundamental question "What is a good simulation?" and we'll progress toward an answer by introducing key theoretical ideas and by learning how to perform simulations using the Julia programming language.
 
-
 ### About the instructor
 
 [I'm a computational scientist](https://natema.github.io/ema-webpage/) who started his scientific career in the theory of multi-agent systems, focusing on algorithmic and probabilistic aspects, and then went on tackling questions in computational neuroscience and artificial neural networks. 
