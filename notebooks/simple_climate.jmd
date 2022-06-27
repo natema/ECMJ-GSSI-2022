@@ -3,6 +3,7 @@
 # ECMJ: First models of climate change
 
 Let's develop a first simple model of climate change. 
+These notes are based on [this lecture](https://computationalthinking.mit.edu/Spring21/our_first_climate_model/).
 
 We first need to recall the fundamental concept of _differential equation_ and see how to solve them in Julia. 
 
