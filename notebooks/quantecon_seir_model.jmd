@@ -194,7 +194,7 @@ While maintaining the core system of ODEs in $ (s, e, i, r) $, we will extend th
 
 ### Extending the Model
 
-First, we can consider some additional calculations such as the cumulative caseload (i.e., all those who have or have had the infection) as $ c = i + r $.  Differentiating that expression and substituting from the time-derivatives of $ i(t) $ and $ r(t) $ yields $ \frac{d c}{d t} = \sigma e $.
+First, we can consider some additional calculations such as the **cumulative caseload** (i.e., all those who have or have had the infection) as $ c = i + r $.  Differentiating that expression and substituting from the time-derivatives of $ i(t) $ and $ r(t) $ yields $ \frac{d c}{d t} = \sigma e $.
 
 We will assume that the transmission rate follows a process with a reversion to a value $ \bar{R}_0(t) $ which could conceivably be influenced by policy.  The intuition is that even if the targeted $ \bar{R}_0(t) $ was changed through social distancing/etc., lags in behavior and implementation would smooth out the transition, where $ \eta $ governs the speed of $ R_0(t) $ moves towards $ \bar{R}_0(t) $.
 
@@ -227,7 +227,6 @@ The system [(41.2)](#equation-seir-system) and the supplemental equations can be
 Note that in those parameters, the targeted reproduction number, $ \bar{R}_0(t) $, is an exogenous function.
 
 The model is then $ \frac{d x}{d t} = F(x,t) $  where,
-
 
 <a id='equation-dfcv'></a>
 $$
@@ -290,7 +289,7 @@ The only confusing part of the notation is the `R̄₀(t, p)` which evaluates th
 
 ### Parameters
 
-The baseline parameters are put into a named tuple generator (see previous lectures using [Parameters.jl](https://github.com/mauro3/Parameters.jl)) with default values discussed above.
+The baseline parameters are put into a named tuple generator (see [Parameters.jl](https://github.com/mauro3/Parameters.jl)) with default values discussed above.
 
 ```julia
 p_gen = @with_kw ( T = 550.0, γ = 1.0 / 18, σ = 1 / 5.2, η = 1.0 / 20,
@@ -325,7 +324,7 @@ Let’s run some experiments using this code.
 
 ```julia
 sol = solve(prob, Tsit5())
-@show length(sol.t);
+@show length(sol.t)
 ```
 
 We see that the adaptive time-stepping used approximately 45 time-steps to solve this problem to the desired accuracy.  Evaluating the solver at points outside of those time-steps uses an interpolator consistent with the solution to the ODE.
