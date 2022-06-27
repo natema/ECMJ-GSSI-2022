@@ -76,7 +76,7 @@ Each of the above terms should be intended as an average over the entire globe.
 
 Let's address the first term, $\color{orange}{\text{incoming solar radiation}}$. 
 
-![](/images/planetary_energy_balance.png)
+![](/ECMJ-GSSI-2022/images/planetary_energy_balance.png)
 
 The amount of energy that Earth receives from the Sun, i.e. Earth's [insolation](https://en.wikipedia.org/wiki/Solar_irradiance), is 
 ```julia
@@ -90,7 +90,7 @@ Thus, out of the energy `S` that is received by the Sun, the fraction that it is
 
 There's another important correction that we should apply to the above measure of insolation. 
 
-![](/images/insolation.jpg)
+![](/ECMJ-GSSI-2022/images/insolation.jpg)
 
 The above number `S` is estimated for a square meter of surface that lies _perpendicularly_ to the sunrays. 
 However, the Earth's surface is spherical. 
