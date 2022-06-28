@@ -1,23 +1,10 @@
----
-title: How Loops Work, An Introduction to Discrete Dynamics
-author: Chris Rackauckas
-date: September 15th, 2020
-weave_options:
-    doctype: md2html
-    highlight: pygments
-    template: ../../scimlbook.tpl
----
+## [Back to the syllabus](/ECMJ-GSSI-2022/)
 
-## [Youtube Video Link Part 1](https://www.youtube.com/watch?v=GhBARuHEydM)
-## [Youtube Video Link Part 2](https://youtu.be/AXHLyHfyEuA)
+# ECMJ: Introduction to Discrete Dynamics
 
-As we saw with the physics-informed neural networks, the basics of most
-scientific models are dynamical systems. Thus if we want to start to dig into
-deeper methods, we will need to start looking into the theory and practice of
-nonlinear dynamical systems. In this lecture we will go over the basic
-properties of dynamical systems and understand their general behavior through
-code. We will also learn the idea of stability as an asymtopic property of a
-mapping, and understand when a system is stable.
+In this lecture we will go over the basic properties of dynamical systems and understand their general behavior. 
+We will learn about the idea of stability as an asymptotic property of a mapping, and understand when a system is stable.
+The notes are largely copy-pasted from [Rackauckas's _How Loops Work, An Introduction to Discrete Dynamics_](https://book.sciml.ai/notes/04/). 
 
 ## Discrete Dynamical Systems
 
@@ -25,22 +12,21 @@ A discrete dynamical system is a system which updates through discrete updates:
 
 $$u_{n+1} = model(u_n,n)$$
 
-There are many examples of a discrete dynamical system found throughout the
-scientific literature. For example, many ecological models are discrete dynamical
-systems, with the most famous being the logistic map:
+There are many examples of a discrete dynamical system found throughout the scientific literature. 
+For example, many ecological models are discrete dynamical systems, with the most famous being the logistic map:
 
 $$u_{n+1} = r u_n (1 - u_n)$$
 
-describing the growth of a population with a carrying capacity of 1 and a growth
-rate of `r`. Another way in which discrete dynamical systems are often encountered
-is through time series models. These are generally seen in financial forecasting
-and For example, the autoregressive model AR1 is
-the following linear dynamical system:
+describing the growth of a population with a carrying capacity of 1 and a growth rate of `r`. 
+
+Another way in which discrete dynamical systems are often encountered is through time series models. 
+These are generally seen in financial forecasting.
+For example, the autoregressive model AR1 is the following linear dynamical system:
 
 $$u_{n+1} = \alpha u_n + \epsilon_n$$
 
-where $\epsilon$ is a standard normal random number. The AR(k) model allows
-itself to update using delays as well:
+where $\epsilon$ is a standard normal random number.
+The AR(k) model allows itself to update using delays as well:
 
 $$u_{n+1} = \sum_{j=0}^{k-1} \alpha_j u_{n-j} + \epsilon_n$$
 
@@ -48,17 +34,16 @@ The ARMA model is one that allows using delays on the randomness as well:
 
 $$u_{n+1} = \sum_{j=0}^{k-1} (\alpha_j u_{n-j}  + \beta_j \epsilon_{n-j})$$
 
-Another embodiment of a discrete dynamical system is a Recurrent Neural Network
-(RNN). In its simplest form, a RNN is a system of the form:
+Another embodiment of a discrete dynamical system is a Recurrent Neural Network (RNN). 
+In its simplest form, a RNN is a system of the form:
 
 $$u_{n+1} = u_n + f(u_n,\theta)$$
 
 where $f$ is a neural network parameterized by $\theta$.
 
-Note that discrete dyamical systems are even more fundamental than just the
-ones shown. In any case where a continuous model is discretized to loop on the
-computer, the resulting algorithm is a discrete dynamical system and thus
-evolves according to its properties. This fact will be revisited later.
+Note that discrete dynamical systems are even more fundamental than just the ones shown.
+In any case where a continuous model is discretized to loop on the computer, the resulting algorithm is a discrete dynamical system and thus evolves according to its properties. 
+This fact will be revisited later.
 
 ## Properties of Linear Dynamical Systems
 
@@ -66,9 +51,9 @@ First let's take a look at the scalar linear dynamical system:
 
 $$u_{n+1} = \alpha u_{n}$$
 
-We want to ask what the global or geometric behavior of this system is. We
-can do this by expanding out the system. Notice that if ``u_0`` is known,
-then
+We want to ask what the global or geometric behavior of this system is.
+We can do this by expanding out the system. 
+Notice that if ``u_0`` is known, then
 
 $$u_{n+1} = \alpha^n u_0$$
 
@@ -77,35 +62,30 @@ The global behavior can then be categorized as:
 - If $\Vert \alpha \Vert < 1$, then $u_n \rightarrow 0$
 - If $\Vert \alpha \Vert > 1$, then $u_n \rightarrow \infty$
 
-If $\Vert \alpha \Vert = 1$, then $u_n \rightarrow u_0$ if everything is in the
-real numbers, but more complex dynamics can occur on the complex plane.
+If $\Vert \alpha \Vert = 1$, then $u_n \rightarrow u_0$ if everything is in the real numbers, but more complex dynamics can occur on the complex plane.
 
 ## Nonlinear Geometric Dynamics
 
-The Geometric Theory of Dynamical Systems is the investigation of their long-term
-properties and the geometry of the phase space which they occupy. Let's start
-looking at this in practical terms: how do nonlinear update equations act
-as time goes to infinity?
+The _Geometric Theory of Dynamical Systems_ is the investigation of their long-term properties and the geometry of the phase space which they occupy. 
+Let's start looking at this in practical terms: how do nonlinear update equations act as time goes to infinity?
 
 #### Banach Fixed Point Theorem
 
-There are surprisingly simple results that we can prove. First let's recall
-the Banach Fixed Point Theorem (also known as the Contraction Mapping Theorem).
-Let $(X,d)$ be a metric space ($X$ is the set of points we are thinking of, here
-the real numbers. $d$ is a distance function). $f$ is a contraction mapping if
+There are surprisingly simple results that we can prove. 
+First let's recall the [Banach Fixed Point Theorem](https://en.wikipedia.org/wiki/Banach_fixed-point_theorem).
+Let $(X,d)$ be a metric space. 
+That is, $X$ is the set of points we are thinking of, here the real numbers, and $d$ is a distance function.  
+$f$ is a contraction mapping if
 
 $$d(f(x),f(y)) \leq q d(x,y)$$
 
 where $q < 1$, that is, if applying $f$ always decreases the distance.
-The theorem then states
-that if $f$ is a contraction mapping, then there is a unique fixed point
-(point $x^\ast$ where $f(x^\ast)=x^\ast$) and a sequence such that $x_0 \rightarrow x^\ast$
-where
+The theorem then states that if $f$ is a contraction mapping, then there is a unique **fixed point**, namely a point $x^\ast$ where $f(x^\ast)=x^\ast$, and a sequence such that $x_0 \rightarrow x^\ast$ where
 
 $$x_{n+1} = f(x_n)$$
 
-The proof is by induction, showing that the sequence is Cauchy. For some $m>n$
-we do by the Triangle Inequality
+The proof is by induction, showing that the sequence is Cauchy. 
+For some $m>n$ we do by the Triangle Inequality
 
 $$d(x_m,x_n) \leq d(x_{m},x_{m-1}) + \ldots + d(x_{n+1},x_n)$$
 
