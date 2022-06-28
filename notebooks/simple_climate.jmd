@@ -199,7 +199,7 @@ The [greenhouse effect](https://en.wikipedia.org/wiki/Greenhouse_effect) can be 
 $$
 \begin{align*}
 	\color{grey}{\text{human-caused greenhouse effect (trapped outgoing radiation)}} \newline 
-	= \text{forcing\_coefficient} \cdot \ln \left(\frac {\text{CO}_2}{\text{CO}^{(\text{0})}_2}\right),
+	= \text{forcing_coefficient} \cdot \ln \left(\frac {\text{CO}_2}{\text{CO}^{(\text{0})}_2}\right),
 \end{align*}
 $$
 where $\text{CO}^{(\text{0})}_2$ is the initial value of the CO₂ level in the atmosphere. 
