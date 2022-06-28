@@ -518,16 +518,13 @@ display(loss())
 Flux.train!(loss, Flux.params(NNODE), data, opt; cb=cb)
 ```
 
-How well did this do? Well if we take the integral of both sides of our
-differential equation, we see it's fairly trivial:
+How well did this do? Well if we take the integral of both sides of our differential equation, we see it's fairly trivial:
 
 ```math
 \int g' = g = \int \cos 2\pi t = C + \frac{\sin 2\pi t}{2\pi}
 ```
 
-where we defined ``C = 1``. Let's take a bunch of (input,output) pairs from the
-neural network and plot it against the analytical solution to the differential
-equation:
+where we defined ``C = 1``. Let's take a bunch of (input,output) pairs from the neural network and plot it against the analytical solution to the differential equation:
 
 ```julia
 using Plots
@@ -536,34 +533,25 @@ plot(t,g.(t),label="NN")
 plot!(t,1.0 .+ sin.(2π.*t)/2π, label = "True Solution")
 ```
 
-We see that it matches very well, and we can keep improving this fit by increasing
-the size of the neural network, using more training points, and training for
-more iterations.
+We see that it matches very well, and we can keep improving this fit by increasing the size of the neural network, using more training points, and training for more iterations.
 
-### Example: Harmonic Oscillator Informed Training
+### Harmonic-Oscillator Informed Training
 
-Using this idea, differential equations encoding physical laws can be utilized
-inside of loss functions for terms which we have some basis to believe should
-approximately follow some physical system. Let's investigate this last step
-by looking at how to inform the training of a neural network using the harmonic
-oscillator.
+Using this idea, differential equations encoding physical laws can be utilized inside of loss functions for terms which we have some basis to believe should approximately follow some physical system. 
+Let's investigate this last step by looking at how to inform the training of a neural network using the harmonic oscillator.
 
-Let's assume that we are taking measurements of (position,force) in some real
-one-dimensional spring pushing and pulling against a wall.
+Let's assume that we are taking measurements of (position,force) in some real one-dimensional spring pushing and pulling against a wall.
 
 ![](https://thumbs.dreamstime.com/b/hookes-law-vector-illustration-physics-extend-spring-force-explanation-scheme-compress-mathematical-experiment-weight-177188357.jpg)
 
-But instead of the simple spring, let's assume we had a more complex spring,
-for example, let's say ``F(x) = -kx + 0.1sin(x)`` where this extra term is due to
-some deformities in the medal (assume mass=1). Then by Newton's law of motion
-we have a second order ordinary differential equation:
+But instead of the simple spring, let's assume we had a more complex spring, for example, let's say ``F(x) = -kx + 0.1sin(x)`` where this extra term is due to some deformities in the medal (assume mass=1). 
+Then by Newton's law of motion we have a second order ordinary differential equation:
 
 ```math
 x'' = -kx + 0.1 \sin(x)
 ```
 
-We can use the [DifferentialEquations.jl package](https://diffeq.sciml.ai/stable/)
-to solve this differential equation and see what this system looks like:
+We can use the [DifferentialEquations.jl package](https://diffeq.sciml.ai/stable/) to solve this differential equation and see what this system looks like:
 
 ```julia
 using DifferentialEquations
@@ -574,22 +562,18 @@ sol = solve(prob)
 plot(sol,label=["Velocity" "Position"])
 ```
 
-Don't worry if you don't understand this sytnax yet: we will go over differential
-equation solvers and DifferentialEquations.jl in a later lecture.
-
-Let's say we want to learn how to predict the force applied on the spring at
-each point in space, ``F(x)``. We want to learn a function, so this is the job
-for machine learning! However, we only have 6 measurements, which includes the
-information about (position,velocity,force) at evenly spaced times:
+Let's say we want to learn how to predict the force applied on the spring at each point in space, ``F(x)``. We want to learn a function. 
+However, we only have 6 measurements, which includes the information about (position,velocity,force) at evenly spaced times:
 
 ```julia
+t = 0:3.3:10
+
 plot_t = 0:0.01:10
 data_plot = sol(plot_t)
 positions_plot = [state[2] for state in data_plot]
 force_plot = [force(state[1],state[2],k,t) for state in data_plot]
 
 # Generate the dataset
-t = 0:3.3:10
 dataset = sol(t)
 position_data = [state[2] for state in sol(t)]
 force_data = [force(state[1],state[2],k,t) for state in sol(t)]
@@ -598,10 +582,9 @@ plot(plot_t,force_plot,xlabel="t",label="True Force")
 scatter!(t,force_data,label="Force Measurements")
 ```
 
-Can we train a neural network to approximate the expected force at any location
-for this spring? To see whether this is possible with a standard neural network,
-let's just do it. Let's define a neural network to be ``F(x)`` and see if we
-can learn the force function!
+Can we train a neural network to approximate the expected force at any location for this spring? 
+
+Let's define a neural network to be ``F(x)`` and see if we can learn the force function.
 
 ```julia
 NNForce = Chain(x -> [x],
@@ -610,15 +593,14 @@ NNForce = Chain(x -> [x],
            first)
 ```
 
-Now our loss function will be to match the force at the (position,force) pairs
-in the dataset:
+Now our loss function will be to match the force at the (position,force) pairs in the dataset:
 
 ```julia
 loss() = sum(abs2,NNForce(position_data[i]) - force_data[i] for i in 1:length(position_data))
 loss()
 ```
 
-Our random parameters do not do so well, so let's train!
+Our random parameters do not do so well, so let's train:
 
 ```julia
 opt = Flux.Descent(0.01)
@@ -634,8 +616,8 @@ display(loss())
 Flux.train!(loss, Flux.params(NNForce), data, opt; cb=cb)
 ```
 
-The neural network almost exactly matched the dataset, but how well did it
-actually learn the real force function? Let's plot it to see:
+The neural network almost exactly matched the dataset, but how well did it actually learn the real force function? 
+Let's plot it to see:
 
 ```julia
 learned_force_plot = NNForce.(positions_plot)
@@ -645,13 +627,11 @@ plot!(plot_t,learned_force_plot,label="Predicted Force")
 scatter!(t,force_data,label="Force Measurements")
 ```
 
-Ouch. The problem is that a neural network can approximate any function, so it
-approximated *a* function that fits the data, but not *the correct* function.
+Ouch. The problem is that a neural network can approximate any function, so it approximated *a* function that fits the data, but not *the correct* function.
 We somehow need to have more data... but where can we get more data?
 
-Well, even a first year undergrad in physics will know Hooke's law, which is
-that the idealized spring should satisfy ``F(x) = -kx``. This is a decent assumption
-for the evolution of the system:
+Even a first year undergrad in physics will know Hooke's law, which is that the idealized spring should satisfy ``F(x) = -kx``. 
+This is a decent assumption for the evolution of the system:
 
 ```julia
 force2(dx,x,k,t) = -k*x
@@ -661,11 +641,8 @@ plot(sol,label=["Velocity" "Position"])
 plot!(sol_simplified,label=["Velocity Simplified" "Position Simplified"])
 ```
 
-While it's not quite correct, and it definitely drifts near the end, it should
-be a useful non-data assumption that we can add to improve the fitting. So,
-assuming we know ``k`` (this lab you probably have done before!), we can
-regularize this fitting by having a term that states our neural network should
-be the solution to the differential equation.
+While it's not quite correct, and it definitely drifts near the end, it should be a useful non-data assumption that we can add to improve the fitting. 
+Assuming we know ``k``, we can regularize this fitting by having a term that states our neural network should be the solution to the differential equation.
 
 This term looks like what we had done before:
 
@@ -675,16 +652,16 @@ loss_ode() = sum(abs2,NNForce(x) - (-k*x) for x in random_positions)
 loss_ode()
 ```
 
-If this term is zero, then ``F(x) = -kx``, which is approximately true. So now
-let's put these together:
+If this term is zero, then ``F(x) = -kx``, which is approximately true. 
+So now let's put these together:
 
 ```julia
 λ = 0.1
 composed_loss() = loss() + λ*loss_ode()
 ```
 
-where ``λ`` is some weight factor to control the regularization against the
-physics assumption. Now we can train the physics-informed neural network:
+where ``λ`` is some weight factor to control the regularization against the physics assumption. 
+Now we can train the physics-informed neural network:
 
 ```julia
 opt = Flux.Descent(0.01)
@@ -706,19 +683,11 @@ plot!(plot_t,learned_force_plot,label="Predicted Force")
 scatter!(t,force_data,label="Force Measurements")
 ```
 
-And there we go: we have used knowledge of physics to help inform our neural
-network training process!
+And there we go: we have used knowledge of physics to help inform our neural network training process.
 
 ## Conclusion
 
-In this lecture we motivated machine learning not as a process of predicting
-from data but as a process for learning arbitrary nonlinear functions. Neural
-networks were just one choice of possible function. We then demonstrated how
-differential equations could be solved using this function approximation
-technique and then put together these two domains, solving differential equations
-and approximating data, into a single process to allow for physical knowledge
-to be embedded into the training process of a neural network, thus arriving
-at a physics-informed neural network. This is just one method in scientific
-machine learning which we will be exploring in more detail, demonstrating how
-we can utilize scientific knowledge to improve fits and allow for data-efficient
-machine learning.
+In this note we used machine learning as a technique for learning arbitrary nonlinear functions, rather than for predicting from data. 
+Neural networks are just one choice of possible function. 
+We saw how differential equations could be solved using this function approximation techniques, solving differential equations and approximating data at the same time, allowing for physical knowledge to be embedded into the training process of a neural network, thus arriving at a physics-informed neural network. 
+This is just one method which demonstrates how we can use scientific knowledge to improve fitting and allow for data-efficient machine learning.
