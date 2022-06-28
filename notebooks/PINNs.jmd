@@ -5,14 +5,8 @@
 In this notebook we will introduce the idea of [physics-informed neural networks (PINNs)](https://en.wikipedia.org/wiki/Physics-informed_neural_networks). 
 It is largely based on [Rackauckas's Introduction to Scientific Machine Learning through Physics-Informed Neural Networks](https://book.sciml.ai/notes/03/). 
 
-Let's start by understanding
-what a neural network really is, why they are used, and what kinds of problems
-they solve, and then we will use this understanding of a neural network
-to see how to solve ordinary differential equations with neural networks.
-For there, we will use this method to regularize neural networks with physical
-equations, the aforementioned physics-informed neural network, and see how to
-define neural network architectures that satisfy physical constraints to improve
-the training process.
+Let's start by understanding what a neural network really is, why they are used, and what kinds of problems they solve, and then we will use this understanding of a neural network to see how to solve ordinary differential equations with neural networks.
+For there, we will use this method to regularize neural networks with physical equations, the aforementioned physics-informed neural network, and see how to define neural network architectures that satisfy physical constraints to improve the training process.
 
 ## Getting Started with Machine Learning: Adding Flux
 
@@ -116,6 +110,7 @@ Let's dig into the library and see how that's represented and really understand 
 First, let's figure out where `Dense` comes from and what it does.
 
 ```julia
+using InteractiveUtils
 @which Dense(10,32,tanh)
 ```
 
