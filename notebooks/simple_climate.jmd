@@ -24,6 +24,7 @@ for example, we can rarely predict, a-priori, where a moving mass will be locate
 The equations describing how a function _changes_ are called [differential equations](https://en.wikipedia.org/wiki/Differential_equation). 
 
 A simple example of _ordinary_ (one-variable) differential equation is $D_t y = a - bt$. In Julia we can define such differential equation using the [ModelingToolkit](https://mtk.sciml.ai/stable/) library: 
+
 ```julia
 using ModelingToolkit
 
@@ -37,6 +38,7 @@ equation = [
 
 @named system = ODESystem(equation)
 ```
+
 The `@named` macro [essentially rewrites](https://discourse.julialang.org/t/modelingtoolkit-jl-version-management/67771/3) the last line as 
 ```julia; eval=false
 system = ODESystem(equation; name=:example_system)
@@ -141,6 +143,7 @@ We thus have the system
 
 In order to define an `ODEProblem`, we also need an initial condition. 
 Let's assume that the time 0 of our equation corresponds to the year 1850, before the start of the [Second Industrial Revolution](https://en.wikipedia.org/wiki/Second_Industrial_Revolution); at the time, it is estimated that 
+
 ```julia
 temp₀ = 14.0 # °C in 1850
 init_condition = [temp => temp₀]
