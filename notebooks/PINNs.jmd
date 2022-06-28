@@ -3,7 +3,7 @@
 # ECMJ: Physics-Informed Neural Networks
 
 In this notebook we will introduce the idea of [physics-informed neural networks (PINNs)](https://en.wikipedia.org/wiki/Physics-informed_neural_networks). 
-It is largely copy-pasted from [Rackauckas's Introduction to Scientific Machine Learning through Physics-Informed Neural Networks](https://book.sciml.ai/notes/03/). 
+It is largely copy-pasted from [Rackauckas's _Introduction to Scientific Machine Learning through Physics-Informed Neural Networks_](https://book.sciml.ai/notes/03/). 
 
 Let's start by understanding what a neural network really is, why they are used, and what kinds of problems they solve, and then we will use this understanding of a neural network to see how to solve ordinary differential equations with neural networks.
 For there, we will use this method to regularize neural networks with physical equations, the aforementioned physics-informed neural network, and see how to define neural network architectures that satisfy physical constraints to improve the training process.
