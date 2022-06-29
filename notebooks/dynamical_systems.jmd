@@ -99,24 +99,21 @@ and since adding more never hurts:
 
 $$d(x_m,x_n) \leq q^n d(x_{1},x_{0}) \sum_{k=0}^{\infty} q^k$$
 
-But that summation is just a geometric series now, and since $q<1$ we know it
-converges to $1/(1-q)$, and so we get:
+But that summation is just a geometric series now, and since $q<1$ we know it converges to $1/(1-q)$, and so we get:
 
 $$d(x_m,x_n) \leq \frac{q^n}{1-q} d(x_{1},x_{0})$$
 
-The coefficient converges to zero as $n$ increases, and so the sequence must
-be Cauchy, which implies there's a unique fixed point.
+The coefficient converges to zero as $n$ increases, and so the sequence must be Cauchy, which implies there's a **unique fixed point**.
 
 #### Stability of Linear Discrete Dynamical Systems
 
-Now let's take a mapping $f$ which is sufficiently nice ($f \in C^1$, i.e.
-the derivative of $f$ exists and is continuous), where
+Now let's take a mapping $f$ which is sufficiently nice ($f \in C^1$, i.e.  the derivative of $f$ exists and is continuous), where
 
 $$x_{n+1} = f(x_n)$$
 
-Assume that $\Vert f^\prime (x^\ast) \Vert < 1$ at some point where $f(x)=x$. Then by
-continuity of the second derivative, it follows that there is a neighborhood
-where $\Vert f^\prime (x) \Vert < 1$ (). Now recall that this means
+Assume that $\Vert f^\prime (x^\ast) \Vert < 1$ at some point where $f(x)=x$. 
+Then by continuity of the second derivative, it follows that there is a neighborhood where $\Vert f^\prime (x) \Vert < 1$ (). 
+Now recall that this means
 
 $$\frac{df}{dx} \leq 1$$
 
@@ -128,35 +125,23 @@ or
 
 $$\Vert f(y)-f(x) \Vert \leq \Vert y-x \Vert$$
 
-This is essentially another way of saying that a function that is differentiable
-is Lipschitz, where we can use the derivative as the Lipschitz bound. But notice
-this means that, in this neighborhood, a function with a derivative less than
-1 is a contraction mapping, and thus there is a limiting sequence which goes to
-the fixed point by the Banach Fixed Point Theorem. Furthermore, the uniquess
-guerentees that there is only one fixed point in a sufficiently small neighborhood
-where the derivative is all less than 1.
+This is essentially another way of saying that a function that is differentiable is Lipschitz, where we can use the derivative as the Lipschitz bound. 
+But notice this means that, in this neighborhood, a function with a derivative less than 1 is a contraction mapping, and thus there is a limiting sequence which goes to the fixed point by the Banach Fixed Point Theorem. 
+Furthermore, the uniqueness guarantees that there is only one fixed point in a sufficiently small neighborhood where the derivative is all less than 1.
 
-A way to interpret this result is that, any nice enough function $f$ is locally
-linear. Thus we can understand the global properties of $f$ by looking the
-linearization of its dynamics, where the best linear approximation is the
-linear function $f^\prime (x) x$. This means that we can think of
+We can then understand the global properties of $f$ by looking at the linearization of its dynamics, where the best linear approximation is the linear function $f(x+\epsilon) = x + f^\prime (x) \epsilon$. 
+This means that we can think of
 
 $$x_{n+1} = f(x_n)$$
 
 locally as being approximated by
 
-$$x_{n+1} = f^\prime (x) x_n$$
+$$x_{n+1} - x = f^\prime (x) (x_n - x)$$
 
-and so if the derivative is less than 1 in some neighborhood of a fixed point,
-then we locally have a linear dynamical system which looks like the simple
-$x_{n+1} = \alpha x_n$ where $\alpha <1$, and so we get the same convergence
-property.
+and so if the derivative is less than 1 in some neighborhood of a fixed point, then we locally have a linear dynamical system which looks like the simple $x_{n+1} = \alpha x_n$ where $\alpha <1$, and so we get the same convergence property.
 
-This is termed "stability" since, if you are a little bit off from the fixed
-point, you will tend to go right back to it. An unstable fixed point is one
-where you fall away. And what happens when the derivative is one? There are
-various forms of semi-stability that can be proved which go beyond the topic
-of this course.
+This is termed "stability" since, if you are a little bit off from the fixed point, you will tend to go right back to it. 
+An unstable fixed point is one where you fall away.
 
 #### Update Form
 
@@ -164,14 +149,12 @@ Now let's look at another form:
 
 $$x_{n+1} = x_n + f(x_n)$$
 
-For example, this is what we generally see with the recurrent neural network
-(or, as we will find out later, this is how discretizations of continuous systems
-tend to look!). In this case, we can say that this is a dynamical system
+For example, this is what we generally see with discretizations of continuous systems. 
+In this case, we can say that this is a dynamical system
 
 $$x_{n+1} = g(x_n)$$
 
-and so if $-2 < f^\prime < 0$, then $\Vert g^\prime \Vert = \Vert 1 + f^\prime \Vert < 1$ and so we have the
-same stability idea except now with a condition shifted to zero instead of one.
+and so if $-2 < f^\prime < 0$, then $\Vert g^\prime \Vert = \Vert 1 + f^\prime \Vert < 1$ and so we have the same stability idea except now with a condition shifted to zero instead of one.
 
 ## Multivariable Systems
 
