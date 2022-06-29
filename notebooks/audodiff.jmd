@@ -386,13 +386,11 @@ struct MultiDual{N,T}
     derivs::SVector{N,T}
 end
 
-import Base: +, *
-
-function +(f::MultiDual{N,T}, g::MultiDual{N,T}) where {N,T}
+function Base.:+(f::MultiDual{N,T}, g::MultiDual{N,T}) where {N,T}
     return MultiDual{N,T}(f.val + g.val, f.derivs + g.derivs)
 end
 
-function *(f::MultiDual{N,T}, g::MultiDual{N,T}) where {N,T}
+function Base.:*(f::MultiDual{N,T}, g::MultiDual{N,T}) where {N,T}
     return MultiDual{N,T}(f.val * g.val, f.val .* g.derivs + g.val .* f.derivs)
 end
 ```
@@ -409,8 +407,7 @@ gcubic(xx, yy)
 
 ```
 
-We can calculate the Jacobian of a function $\mathbb{R}^n \to \mathbb{R}^m$
-by applying this to each component function:
+We can calculate the Jacobian of a function $\mathbb{R}^n \to \mathbb{R}^m$ by applying this to each component function:
 
 ```julia
 fsvec(x, y) = SVector(x*x + y*y , x + y)
@@ -418,8 +415,7 @@ fsvec(x, y) = SVector(x*x + y*y , x + y)
 fsvec(xx, yy)
 ```
 
-It would be possible (and better for performance in many cases) to
-store all of the partials in a matrix instead.
+It would be possible (and better for performance in many cases) to store all of the partials in a matrix instead.
 
 Forward-mode AD is implemented in a clean and efficient way in the
 `ForwardDiff.jl` package:
@@ -430,7 +426,7 @@ using ForwardDiff, StaticArrays
 ForwardDiff.gradient( xx -> ( (x, y) = xx; x^2 * y + x*y ), [1, 2])
 ```
 
-### Directional derivative and gradient of functions $f: \mathbb{R}^n \to \mathbb{R}$
+### Directional derivative and gradient of multivariate functions 
 
 For a function $f: \mathbb{R}^n \to \mathbb{R}$ the basic operation is the
 **directional derivative**:
@@ -438,11 +434,9 @@ For a function $f: \mathbb{R}^n \to \mathbb{R}$ the basic operation is the
 $$\lim_{\epsilon \to 0} \frac{f(\mathbf{x} + \epsilon \mathbf{v}) - f(\mathbf{x})}{\epsilon} =
 [\nabla f(\mathbf{x})] \cdot \mathbf{v},$$
 
-where $\epsilon$ is still a single dimension and $\nabla f(\mathbf{x})$ is the
-direction in which we calculate.
+where $\epsilon$ is still a single dimension and $\nabla f(\mathbf{x})$ is the direction in which we calculate.
 
-We can directly do this using the same simple `Dual` numbers as above,
-using the *same* $\epsilon$, e.g.
+We can directly do this using the same simple `Dual` numbers as above, using the *same* $\epsilon$, e.g.
 
 $$f(x, y) = x^2  \sin(y)$$
 
@@ -455,23 +449,13 @@ so we have indeed calculated $\nabla f(x_0, y_0) \cdot \mathbf{v},$ where
 $\mathbf{v} = (a, b)$ are the components that we put into the derivative
 component of the `Dual` numbers.
 
-If we wish to calculate the directional derivative in another direction, we
-could repeat the calculation with a different $\mathbf{v}$. A better solution
-is to use another independent epsilon $\epsilon$, expanding
-$$x = x_0 + a_1 \epsilon_1 + a_2 \epsilon_2$$ and putting
-$\epsilon_1 \epsilon_2 = 0$.
+If we wish to calculate the directional derivative in another direction, we could repeat the calculation with a different $\mathbf{v}$. 
+In particular, if we wish to calculate the gradient itself, $\nabla f(x_0, y_0)$, we need to calculate both partial derivatives, which corresponds to two directional derivatives, in the directions $(1, 0)$ and $(0, 1)$, respectively.
 
-In particular, if we wish to calculate the gradient itself,
-$\nabla f(x_0, y_0)$, we need to calculate both partial derivatives, which
-corresponds to two directional derivatives, in the directions
-$(1, 0)$ and $(0, 1)$, respectively.
+### Forward-Mode AD as Jacobian-vector product
 
-### Forward-Mode AD as jvp
-
-Note that another representation of the directional derivative is $f'(x)v$,
-where $f'(x)$ is the Jacobian or total derivative of $f$ at $x$. To see the
-equivalence of this to a directional derivative, write it out in the standard
-basis:
+Note that another representation of the directional derivative is $f'(x)v$, where $f'(x)$ is the Jacobian or total derivative of $f$ at $x$. 
+To see the equivalence of this to a directional derivative, write it out in the standard basis:
 
 $$w_i = \sum_{j}^{m} J_{ij} v_{j}$$
 
@@ -479,33 +463,24 @@ Now write out what $J$ means and we see that:
 
 $$w_i = \sum_j^{m} \frac{df_i}{dx_j} v_j = \nabla f_i(x) \cdot v$$
 
-**The primitive action of forward-mode AD is $f'(x)v$!**
-
-This is also known as a *Jacobian-vector product*, or *jvp* for short.
-
-We can thus represent vector calculus with multidimensional dual numbers as
-follows. Let $d =[x,y]$, the vector of dual numbers. We can instead represent
-this as:
+$f'(x)v$, also known as a *Jacobian-vector product*, or *jvp* for short, is the core object of forward-mode AD, since we can represent vector calculus with multidimensional dual numbers as follows. Let $d =[x,y]$ be the vector of dual numbers. We can represent it as:
 
 $$d = d_0 + v_1 \epsilon_1 + v_2 \epsilon_2$$
 
-where $d_0$ is the *primal* vector $[x_0,y_0]$ and the $v_i$ are the vectors
-for the *dual* directions. If you work out this algebra, then note that a
-single application of $f$ to a multidimensional dual number calculates:
+where $d_0$ is the *primal* vector $[x_0,y_0]$, the $v_i$ are the vectors for the *dual* directions and the $\epsilon_i$s are the infinitesimal values such that $\epsilon_1 \epsilon_2 = 0$. 
+If we work out the algebra, we note that a single application of $f$ to a multidimensional dual number calculates
 
 $$f(d) = f(d_0) + f'(d_0)v_1 \epsilon_1 + f'(d_0)v_2 \epsilon_2$$
 
 i.e. it calculates the result of $f(x,y)$ and two separate directional derivatives.
-Note that because the information about $f(d_0)$ is shared between the calculations,
-this is more efficient than doing multiple applications of $f$. And of course,
-this is then generalized to $m$ many directional derivatives at once by:
+Because the information about $f(d_0)$ is shared between the calculations, this turns out to be more efficient than doing multiple applications of $f$. 
+This is then generalized to $m$ many directional derivatives at once by:
 
 $$d = d_0 + v_1 \epsilon_1 + v_2 \epsilon_2 + \ldots + v_m \epsilon_m$$
 
 ### Jacobian
 
-For a function $f: \mathbb{R}^n \to \mathbb{R}^m$, we reduce (conceptually,
-although not necessarily in code) to its component functions
+For a function $f: \mathbb{R}^n \to \mathbb{R}^m$, we reduce conceptually to its component functions
 $f_i: \mathbb{R}^n \to \mathbb{R}$, where $f(x) = (f_1(x), f_2(x), \ldots, f_m(x))$.
 
 Then
@@ -521,18 +496,17 @@ in the $n$ different directions of the basis vectors, i.e. if
 
 $d = d_0 + e_1 \epsilon_1 + \ldots + e_n \epsilon_n$
 
-for $e_i$ the $i$th basis vector, then
+where $e_i$ is the $i$-th canonical basis vector, then
 
 $f(d) = f(d_0) + Je_1 \epsilon_1 + \ldots + Je_n \epsilon_n$
 
-computes all columns of the Jacobian simultaniously.
+computes all columns of the Jacobian simultaneously.
 
-### Array of Structs Representation
+### Array-of-structs representation
 
-Instead of thinking about a vector of dual numbers, thus we can instead think of
-dual numbers with vectors for the components. But if there are vectors for the
-components, then we can think of the grouping of dual components as a matrix.
-Thus define our multidimensional multi-partial dual number as:
+Instead of thinking about a vector of dual numbers, we can think of dual numbers with vectors for the components. 
+If there are vectors for the components, we can also think of the grouping of dual components as a matrix.
+Thus, define our multidimensional multi-partial dual number as:
 
 $$D_0 = [d_1,d_2,d_3,\ldots,d_n]$$
 
@@ -540,33 +514,27 @@ $$\Sigma = \begin{bmatrix}
         d_{11} & d_{12} & \cdots & d_{1n} \\
         d_{21} & d_{22} &  & \vdots \\
         \vdots & & \ddots & \vdots \\
-        d_{m1} & \hdots & \hdots & d_{mn}
+        d_{m1} & \cdots & \cdots & d_{mn}
     \end{bmatrix}$$
          
 $$\epsilon=[\epsilon_1,\epsilon_2,\ldots,\epsilon_m]$$
 
 $$D = D_0 + \Sigma \epsilon$$
 
-where $D_0$ is a vector in $\mathbb{R}^n$, $\epsilon$ is a vector of
-dimensional signifiers and $\Sigma$ is a matrix in $\mathbb{R}^{n \times m}$
-where $m$ is the number of concurrent differentiation dimensions. Each row
-of this is a dual number, but now we can use this to easily define higher
-dimensional primitives.
+where $D_0$ is a vector in $\mathbb{R}^n$, $\epsilon$ is a vector of dimensional signifiers and $\Sigma$ is a matrix in $\mathbb{R}^{n \times m}$ where $m$ is the number of concurrent differentiation dimensions. 
+Each row of this is a dual number, but now we can use this to easily define higher dimensional primitives.
 
-For example, let $f(x) = Ax$, matrix multiplication. Then, we can show with
-our dual number arithmetic that:
+For example, let $f(x) = Ax$, matrix multiplication. Then, we can show with our dual number arithmetic that:
 
 $$f(D) = A*D_0 + A*\Sigma*\epsilon$$
 
-is how one would compute the value of $f(D_0)$ and the derivative $f'(D_0)$ in
-all directions signified by the columns of $\Sigma$ simultaniously. Using
-multidimensional Taylor series expansions and doing the manipulations like
-before indeed implies that the arithematic on this object should follow:
+is how one would compute the value of $f(D_0)$ and the derivative $f'(D_0)$ in all directions signified by the columns of $\Sigma$ simultaneously. 
+Using multidimensional Taylor series expansions and doing the manipulations like before indeed implies that the arithmetic on this object should follow:
 
 $$f(D) = f(D_0) + f'(D_0)\Sigma \epsilon$$
 
-where $f'$ is the total derivative or the Jacobian of $f$. This then allows our
-system to be highly efficient by allowing the definition of multidimensional
+where $f'$ is the total derivative or the Jacobian of $f$. 
+This then allows our system to be highly efficient by allowing the definition of multidimensional
 functions, like linear algebra, to be primitives of multi-directional
 derivatives.
 
