@@ -587,10 +587,10 @@ plot!(plot_t,learned_force_plot,label="Predicted Force")
 scatter!(t,force_data,label="Force Measurements")
 ```
 
-Ouch. The problem is that a neural network can approximate any function, so it approximated *a* function that fits the data, but not *the correct* function.
+The neural network can approximate any function, so it approximated *a* function that fits the data, but not *the correct* function.
 We somehow need to have more data... but where can we get more data?
 
-Even a first year undergrad in physics will know Hooke's law, which is that the idealized spring should satisfy ``F(x) = -kx``. 
+We know [Hooke's law](https://en.wikipedia.org/wiki/Hooke's_law), which is that the idealized spring should satisfy ``F(x) = -kx``. 
 This is a decent assumption for the evolution of the system:
 
 ```julia
@@ -601,7 +601,7 @@ plot(sol,label=["Velocity" "Position"])
 plot!(sol_simplified,label=["Velocity Simplified" "Position Simplified"])
 ```
 
-While it's not quite correct, and it definitely drifts near the end, it should be a useful non-data assumption that we can add to improve the fitting. 
+It definitely drifts near the end, but it should be a useful non-data assumption that we can add to improve the fitting. 
 Assuming we know ``k``, we can regularize this fitting by having a term that states our neural network should be the solution to the differential equation.
 
 This term looks like what we had done before:
@@ -647,7 +647,5 @@ And there we go: we have used knowledge of physics to help inform our neural net
 
 ## Conclusion
 
-In this note we used machine learning as a technique for learning arbitrary nonlinear functions, rather than for predicting from data. 
-Neural networks are just one choice of possible function. 
-We saw how differential equations could be solved using this function approximation techniques, solving differential equations and approximating data at the same time, allowing for physical knowledge to be embedded into the training process of a neural network, thus arriving at a physics-informed neural network. 
-This is just one method which demonstrates how we can use scientific knowledge to improve fitting and allow for data-efficient machine learning.
+In this note we saw how differential equations could be solved using the function approximation technique of neural networks, solving differential equations and approximating data at the same time, allowing for physical knowledge to be embedded into the training process of a neural network. 
+This is just one method which demonstrates how we can use scientific knowledge to improve fitting and allow for better data-driven simulations.
