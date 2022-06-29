@@ -278,7 +278,7 @@ hf(xx)
 ```
 
 The first component of the resulting `Dual` is the value $h(a)$, and the
-second component is the derivative, $h'(a)$!
+second component is the derivative, $h'(a)$.
 
 We can codify this into a function as follows:
 
@@ -295,8 +295,7 @@ Finally we can now calculate derivatives such as
 derivative(x -> 3x^5 + 2, 2)
 ```
 
-As a bigger example, we can take a pure Julia `sqrt` function and differentiate
-it by changing the internal algebra:
+As a bigger example, we can take a pure Julia `sqrt` function and differentiate it by changing the internal algebra:
 
 ```julia
 function newtons(x)
@@ -308,20 +307,24 @@ function newtons(x)
 end
 @show newtons(2.0)
 @show (newtons(2.0+sqrt(eps())) - newtons(2.0))/ sqrt(eps())
-newtons(Dual(2.0,1.0))
+@show newtons(Dual(2.0,1.0))
+```
+
+Notice that the computation with dual numbers gives a more precise estimate of the derivative, as we can check by comparing with the analytical solution: 
+```julia
+1/2sqrt(2)
 ```
 
 ### Higher dimensions
 
-How can we extend this to higher dimensional functions? For example, we wish
-to differentiate the following function $f: \mathbb{R}^2 \to \mathbb{R}$:
+How can we extend this to higher dimensional functions? 
+For example, we wish to differentiate the following function $f: \mathbb{R}^2 \to \mathbb{R}$:
 
 ```julia
 fquad(x, y) = x^2 + x*y
 ```
 
-Recall that the **partial derivative** $\partial f/\partial x$ is defined by
-fixing $y$ and differentiating the resulting function of $x$:
+Recall that the **partial derivative** $\partial f/\partial x$ is defined by fixing $y$ and differentiating the resulting function of $x$:
 
 
 ```julia
@@ -350,25 +353,19 @@ fquad_2(y) = fquad(a, y)  # single-variable function
 derivative(fquad_2, b)
 ```
 
-Note that we must do **two separate calculations** to get the two partial
-derivatives; in general, calculating the gradient $\nabla$ of a function
-$f:\mathbb{R}^n \to \mathbb{R}$ requires $n$ separate calculations.
+Note that we must do **two separate calculations** to get the two partial derivatives; in general, calculating the gradient $\nabla$ of a function $f:\mathbb{R}^n \to \mathbb{R}$ requires $n$ separate calculations.
 
 ### Implementation of higher-dimensional forward-mode AD
 
-We can implement derivatives of functions $f: \mathbb{R}^n \to \mathbb{R}$
-by adding several independent partial derivative components to our dual numbers.
+We can implement derivatives of functions $f: \mathbb{R}^n \to \mathbb{R}$ by adding several independent partial derivative components to our dual numbers.
 
-We can think of these as $\epsilon$ perturbations in different directions,
-which satisfy $\epsilon_i^2 = \epsilon_i \epsilon_j = 0$, and
-we will call $\epsilon$ the vector of all perturbations. Then we have
+We can think of these as $\epsilon$ perturbations in different directions, which satisfy $\epsilon_i^2 = \epsilon_i \epsilon_j = 0$, and we will call $\epsilon$ the vector of all perturbations. 
+Then we have
 
 $$f(a + \epsilon) = f(a) + \nabla f(a) \cdot \epsilon + \mathcal{O}(\epsilon^2),$$
 
-where $a \in \mathbb{R}^n$ and $\nabla f(a)$ is the **gradient** of $f$ at $a$,
-i.e. the vector of partial derivatives in each direction.
-$\nabla f(a) \cdot \epsilon$ is the **directional derivative** of $f$ in the
-direction $\epsilon$.
+where $a \in \mathbb{R}^n$ and $\nabla f(a)$ is the **gradient** of $f$ at $a$, i.e. the vector of partial derivatives in each direction.
+$\nabla f(a) \cdot \epsilon$ is the **directional derivative** of $f$ in the direction $\epsilon$.
 
 We now proceed similarly to the univariate case:
 
