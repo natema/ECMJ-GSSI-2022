@@ -65,8 +65,7 @@ Notice that we choose to use `tanh` as our **activation function** between the l
 ### Defining Neural Networks with `Flux.jl`
 
 One of the main deep learning libraries in Julia is [Flux.jl](https://fluxml.ai/). 
-Flux is an interesting library for scientific machine learning because it is built on top of language-wide **automatic differentiation** libraries, giving rise to a programming paradigm known as **differentiable programming**, which means that one can write a program in a manner that it has easily accessible fast derivatives. 
-However, due to being built on a differentiable programming base, the underlying functionality is simply standard Julia code.
+Flux is built on top of language-wide **automatic differentiation** libraries,  which means that one can write a program in a manner that it has easily accessible fast derivatives. 
 
 In the documentation you will find that the way a neural network is defined
 is through a `Chain` of layers. 
@@ -81,8 +80,8 @@ NN2 = Chain(Dense(10,32,tanh),
 NN2(rand(10))
 ```
 
-Notice that Flux.jl as a library is written in pure Julia, which means that every piece of this syntax is just sugar over some Julia code that we can specialize ourselves.
-This is the advantage of having a language fast enough for the implementation of the library and the use of the library!
+Notice that Flux.jl as a library is written in pure Julia, which means that every piece of this syntax is just _sugar_ over some Julia code that we can specialize ourselves.
+This is the advantage of having a language fast enough for the implementation of the library and the use of the library.
 
 For example, the activation function is just a scalar Julia function. 
 If we wanted to replace it by something like the quadratic function, we can just use an **anonymous function** to define the scalar function we would like to use:
@@ -96,7 +95,6 @@ NN3(rand(10))
 
 The second activation function there is what's known as a `relu`. 
 A `relu` can be good to use because it's a very simple operation and satisfies a form of the [UAT](https://en.wikipedia.org/wiki/Universal_approximation_theorem). 
-However, a downside is that its derivative is not continuous, which could impact the numerical properties of some algorithms, and thus it's widely used throughout standard machine learning, but we'll see reasons why it may be disadvantageous.
 
 ### Digging into the Construction of a Neural Network Library
 
@@ -106,7 +104,7 @@ Again, as mentioned before, this neural network `NN2` is simply a function:
 simpleNN(x) = W[3]*tanh.(W[2]*tanh.(W[1]*x + b[1]) + b[2]) + b[3]
 ```
 
-Let's dig into the library and see how that's represented and really understand the construction of a deep learning library. 
+Let's dig into the library and see how that's represented. 
 First, let's figure out where `Dense` comes from and what it does.
 
 ```julia
@@ -123,8 +121,7 @@ struct Dense{F,S<:AbstractArray,T<:AbstractArray}
   σ::F
 end
 
-function Dense(in::Integer, out::Integer, σ = identity;
-               initW = glorot_uniform, initb = zeros)
+function Dense(in::Integer, out::Integer, σ = identity; initW = glorot_uniform, initb = zeros)
   return Dense(initW(out, in), initb(out), σ)
 end
 
@@ -134,10 +131,9 @@ function (a::Dense)(x::AbstractArray)
 end
 ```
 
-First, `Dense` defines a struct in Julia. 
-This struct just holds a weight matrix `W`, a bias vector `b`, and an activation function `σ`. 
+First, `Dense` defines a struct in Julia, which holds a weight matrix `W`, a bias vector `b`, and an activation function `σ`. 
 The function called `Dense` is what's known as an **outer constructor** which defines how the `Dense` type is built. 
-If you give it two integers (and optionally an activation function which defaults to `identity`), then what it will do is take random initial `W` and `b` matrices (according to the `glorot_uniform` distribution for `W` and `zeros` for `b`), and then it will build the type with those matrices.
+If you give it two integers, then what it will do is take random initial `W` and `b` matrices, and then it will build the type with those matrices.
 
 The last portion is what is known as a **callable struct**, or a functor. 
 It defines the dispatch for how calls work on the struct. 
@@ -196,14 +192,6 @@ applychain(fs::Tuple, x) = applychain(tail(fs), first(fs)(x))
 ```
 
 The `...` is known that the **slurp operator**, which allows for "slurping up" multiple arguments into a single object `xs`. 
-For example:
-
-```julia
-slurper(xs...) = @show xs
-slurper(1,2,3,4,5)
-```
-
-We see that slurps the inputs up into a `Tuple`, which are stack-allocated if compiler inference can know exactly the the type.
 
 The function `Chain(xs...) = new{typeof(xs)}(xs)` is an **inner constructor** which builds a new instance of `Chain` where `layers` is a tuple of the inputs.
 This means that in our case where we put a bunch of `Dense` inside of there, `layers` is a tuple of functions. 
@@ -222,8 +210,7 @@ applychain(fs::Tuple, x) = applychain(tail(fs), first(fs)(x))
 ```
 
 `applychain` is a recursive function which applies the first element of the tuple onto `x`, then it calls `applychain` to call the second function onto `x`, repeatedly until there are no more functions in which case it returns `x`. 
-In other words, `applychain` is doing `h(g(f(x)))` on the tuple of functions `(f,g,h)`.
-We can thus see that this library function is exactly equivalent to the neural network we defined by hand, just put together in a different form to give a nice user interface.
+This is exactly equivalent to the neural network we defined by hand.
 
 #### Detail: Recursion
 
@@ -236,7 +223,7 @@ typeof(ff)
 ```
 
 Notice that its type is simply `typeof(ff)` which is unique to the function, i.e. every single function is its own struct.
-In fact, this is exactly what a function is in Julia.
+This is exactly what a function is in Julia.
 A function definition lowers at the parser level to something like:
 
 ```julia;eval=false
@@ -247,11 +234,10 @@ const ff = ff2()
 
 This means that the primitive operation here that everything really comes down to is calls on structs. 
 
-Why is this done with unique **singleton** types? 
-(Singleton types are types where every instance is equivalent).
-If we want the compiler to be able to optimize with respect to which function we are handling inside of another function, then we need "what function we are dealing with" as compile-time information, which necessitates being type information.
+Why is this done with unique **singleton** types, i.e. types are types where every instance is equivalent?
+If we want the compiler to be able to optimize with respect to which function we are handling inside of another function, then we need _what-function-we-are-dealing-with_ as compile-time information, which necessitates being type information.
 
-Tuples are contravariant and heterogeneously typed with a parameter per internal object. 
+Tuples are covariant and heterogeneously typed with a parameter per internal object. 
 For example:
 
 ```julia
@@ -259,7 +245,7 @@ tup = (1.0,1,"1")
 typeof(tup)
 ```
 
-This means that it is possible to infer outputs of a tuple even if it's heterogeneously typed by making good use of constant literals. 
+This means that it is possible to infer outputs of a tuple even if it's heterogeneously typed by making good use of **constant literals**. 
 For example, the expression `tup[1]` will be inferred to have the output `Float64`. 
 However, note that if `i` is not a compile-time constant, then `tup[i]` cannot be inferred since, given what the compiler knows, the output could be either a `Float64`, an `Int64`, or a `String`.
 
@@ -273,9 +259,7 @@ for i in 1:length(tup)
 end
 ```
 
-would be slow if the function call cost is small compared to the dispatch cost
-of about 100ns.  
-This is not always the case, but should be considered in many instances. 
+would be slow if the function call cost is small compared to the dispatch cost of about 100ns.  
 
 How can you get around it? 
 If everything was **constant literals** then this would specialize:
@@ -295,6 +279,7 @@ applychain(fs::Tuple, x) = applychain(tail(fs), first(fs)(x))
 we see that, at compile-time, we know that `typeof((f,g,h)) = Tuple{typeof(f),typeof(g),typeof(h)}`, and so we know that the first `first(fs)` will be `f`, and can specialize on this.
 We know then that `tail(fs)` has to be the `(g,h)` and so then we recurse and know that `g` is first and so on. 
 This means that this scheme is equivalent to have written out `xs[3](xs[2](xs[1](x)))` and is thus generating code perfectly specialized to the order and amount of functions we had put into the `Chain`. 
+
 This kind of abstraction, an abstraction where **all of the overhead compiles away** at compile time, is known as a **zero-cost abstraction**.
 
 ### Training Neural Networks
@@ -312,8 +297,7 @@ loss()
 ```
 
 This loss function takes 100 random points in `[0,1]` and then computes the output of the neural network minus `1` on each of the values, and sums up the squared values (`abs2`).
-Why the squared values?
-This means that every computed loss value is positive, and so we know that by decreasing the loss this means that, on average our neural network outputs are closer to 1. 
+
 What are the weights? 
 Since we're using the Flux callable struct style from above, the weights are those inside of the `NN` chain object, which we can inspect:
 
@@ -344,46 +328,29 @@ This means that `NN(x)` is now a very good function approximator to `f(x) = ones
 
 ### Why neural networks in a simulation course?
 
-All we did was find parameters that made `NN(x)` act like a function `f(x)`.
+What we did was find parameters that made `NN(x)` act like a function `f(x)`.
 In any case where one is acting on data `(x,y)`, the idea is to assume that there exists some underlying mathematical model `f(x) = y`. 
-If we had perfect knowledge of what `f` is, then from only the information of `x` we can then predict what `y` would be. 
 The inference problem is to then figure out what function `f` should be.
-*Machine learning* on data is this problem of finding an approximator to some unknown function.
 
 Why neural networks? 
 Neural networks satisfy two properties.
+
 The first of which is known as the [Universal Approximation Theorem (UAT)](https://en.wikipedia.org/wiki/Universal_approximation_theorem), which in simple non-mathematical language means that, for any ϵ of accuracy, if your neural network is large enough (has enough layers, the weight matrices are large enough), then it can approximate **any** (nice) function `f` within that ϵ. 
 Therefore, we can reduce the problem of finding missing functions, the problem of machine learning, to a problem of finding the weights of neural networks, which is a well-defined mathematical optimization problem.
 
 But there are many other functions with this property. 
 Why neural networks, specifically? 
 For example, you will have learned from analysis that ``a_0 + a_1 x + a_2 x^2 + \ldots`` arbitrary polynomials (Taylor series) can be used to approximate any analytic function. 
-Similarly, a Fourier series
-
-```math
-f(x) = a_0 + \sum_k b_k \cos(kx) + c_k \sin(kx)
-```
-
-can approximate any continuous function `f` (and discontinuous functions also can have convergence, etc. these are the details of a harmonic analysis course).
 
 That's all for one dimension. 
 How about two dimensional functions?
 It turns out it's not difficult to prove that [tensor products](https://en.wikipedia.org/wiki/Tensor_product) of universal approximators will give higher dimensional universal approximators. 
-So for example, tensoring together two polynomials:
-
-```math
-a_0 + a_1 x + a_2 y + a_3 x y + a_4 x^2 y + a_5 x y^2 + a_6 x^2 y^2 + \ldots
-```
-
-will give a two-dimensional function approximator. 
-But notice how we have to resolve every combination of terms. 
+But, in that case, we have to compute every combination of terms. 
 This means that if we used `n` coefficients in each dimension `d`, the total number of coefficients to build a `d`-dimensional universal approximator from one-dimensional objects would need ``n^d`` coefficients.
 This exponential growth is known as **the curse of dimensionality**.
 
-The second property of neural networks that makes them applicable to machine learning is that they overcome the curse of dimensionality. 
-The proofs in this area [can be a little difficult to parse](https://arxiv.org/abs/1908.10828), but what they boil down to is proving in many cases that the growth of neural networks to sufficiently approximate a `d`-dimensional function grows as a polynomial of `d`, rather than exponential. 
+The second property of neural networks that makes them applicable to machine learning is that they overcome the curse of dimensionality: the size of neural networks to sufficiently approximate a `d`-dimensional function grows as a polynomial of `d`, rather than exponential. 
 This means that there's some dimensional cutoff where for ``d>cutoff`` it is more efficient to use a neural network. 
-This can be problem-specific, but generally it tends to be the case at least by 8 or 10 dimensions.
 
 Neural networks have a few other properties to consider as well:
 
@@ -395,9 +362,9 @@ Neural networks have a few other properties to consider as well:
    A neural network where the last layer has an activation function `x->x^2` is a neural network where all outputs are positive. 
    This means that if you want to find a positive function, you can make the optimization easier by enforcing this constraint. 
    A lot of other constraints can be enforced, like `tanh` activation functions can make the neural network be a smooth (all derivatives finite) function, or other activations can cause finite numbers of learnable discontinuities.
-- Generating higher dimensional forms from one dimensional forms does not have good symmetry: for example, the two-dimensional tensor Fourier basis does not have a good way to represent ``sin(xy)``. 
-   This property of the approximator is called (non)isotropy and more detail can be found in [this wonderful talk about function approximation for multidimensional integration (cubature)](https://www.youtube.com/watch?v=JngdaWe3-gg).
-   Neural networks are naturally not aligned to a basis.
+- Generating higher dimensional forms from one dimensional forms does not have good symmetry: for example, the _two-dimensional tensor Fourier basis_ does not have a good way to represent ``sin(xy)``. 
+   Neural networks, instead, are naturally not aligned to a basis.
+   More details can be found in [this talk about function approximation for multidimensional integration](https://www.youtube.com/watch?v=JngdaWe3-gg).
 
 
 #### Why Differential Equations?
@@ -407,7 +374,7 @@ What we wish to do now is to use these properties of neural networks to improve 
 Why do differential equations come up so often in as the model in the scientific context? 
 Essentially, all scientific experiments always have to test how things change.
 For example, you take a system now, you change it, and your measurement is how the changes you made caused changes in the system. 
-This boils down to gather information about how, for some arbitrary system ``y = f(x)``, how ``\Delta x`` is related to ``\Delta y``.
+This boils down to gather information about how, for some arbitrary system ``y = f(x)``, ``\Delta x`` is related to ``\Delta y``.
 Thus what you learn from scientific experiments, what is codified as scientific laws, is not "the answer", but the answer to how things change.
 This process of writing down equations by describing how they change precisely gives differential equations.
 
@@ -417,8 +384,8 @@ The process of solving a differential equation with a neural network, or using a
 
 ### Background: A Method for Solving Ordinary Differential Equations with Neural Networks
 
-[This is a result first due to Lagaris et. al from 1998](https://arxiv.org/pdf/physics/9705023.pdf).  
 The idea is to solve differential equations using neural networks by representing the solution by a neural network and training the resulting network to satisfy the conditions required by the differential equation.
+[This is a result first due to Lagaris et. al from 1998](https://arxiv.org/pdf/physics/9705023.pdf).  
 
 Let's say we want to solve a system of ordinary differential equations
 
@@ -533,14 +500,12 @@ We see that it matches very well, and we can keep improving this fit by increasi
 ### Harmonic-Oscillator Informed Training
 
 Using this idea, differential equations encoding physical laws can be utilized inside of loss functions for terms which we have some basis to believe should approximately follow some physical system. 
-Let's investigate this last step by looking at how to inform the training of a neural network using the harmonic oscillator.
 
+Let's investigate this last step by looking at how to inform the training of a neural network using the harmonic oscillator.
 Let's assume that we are taking measurements of (position,force) in some real one-dimensional spring pushing and pulling against a wall.
 
-![](https://thumbs.dreamstime.com/b/hookes-law-vector-illustration-physics-extend-spring-force-explanation-scheme-compress-mathematical-experiment-weight-177188357.jpg)
-
-But instead of the simple spring, let's assume we had a more complex spring, for example, let's say ``F(x) = -kx + 0.1sin(x)`` where this extra term is due to some deformities in the medal (assume mass=1). 
-Then by Newton's law of motion we have a second order ordinary differential equation:
+Instead of the simple spring, let's assume we had a more complex spring, for example, let's say ``F(x) = -kx + 0.1sin(x)`` where this extra term is due to some deformities in the apparatus. 
+By Newton's law of motion we have a second order ordinary differential equation:
 
 ```math
 x'' = -kx + 0.1 \sin(x)
@@ -557,8 +522,8 @@ sol = solve(prob)
 plot(sol,label=["Velocity" "Position"])
 ```
 
-Let's say we want to learn how to predict the force applied on the spring at each point in space, ``F(x)``. We want to learn a function. 
-However, we only have 6 measurements, which includes the information about (position,velocity,force) at evenly spaced times:
+Let's say we want to learn how to predict the force applied on the spring at each point in space, ``F(x)``. 
+Suppose that we want to learn a function but we only have 4 measurements, which includes the information about (position,velocity,force) at evenly spaced times:
 
 ```julia
 t = 0:3.3:10
