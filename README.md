@@ -12,15 +12,13 @@ Lecture material for the course [Elements of Computational Modeling in Julia, GS
 - [Introduction](/ECMJ-GSSI-2022/notebooks/intro)
 - [A famous simulation: World3](/ECMJ-GSSI-2022/notebooks/world3)
 
-- (Italian draft) [Quick intro to Julia syntax](https://natema.github.io/ECMJ-it-2022/lectures/lezione_0.2_-_introduzione_a_julia.jl.html)
-- (Italian draft) [Quick intro to plotting in Julia](https://natema.github.io/ECMJ-it-2022/lectures/lezione_0.3_come_produrre_grafici.jl.html)
+- (Italian draft) [Quick intro to Julia syntax](https://natema.github.io/ECMJ-it-2022/lectures/lezione_0.2_-_introduzione_a_julia.jl.html) and [quick intro to plotting in Julia](https://natema.github.io/ECMJ-it-2022/lectures/lezione_0.3_come_produrre_grafici.jl.html)
 
 - [A simple climate model](/ECMJ-GSSI-2022/notebooks/simple_climate)
 - [Physics-Informed Neural Networks](/ECMJ-GSSI-2022/notebooks/PINNs)
 
 - [Forward-Mode Automatic Differentiation](/ECMJ-GSSI-2022/notebooks/autodiff)
 - [Discrete Dynamics](/ECMJ-GSSI-2022/notebooks/dynamical_systems)
-- (SciML by Rackauckas)  [Ordinary Differential Equations](https://book.sciml.ai/notes/07/)
 
 ----
 
