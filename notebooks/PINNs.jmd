@@ -108,7 +108,7 @@ Let's dig into the library and see how that's represented.
 First, let's figure out where `Dense` comes from and what it does.
 
 ```julia
-using InteractiveUtils
+using InteractiveUtils # only needed when using Weave
 @which Dense(10,32,tanh)
 ```
 

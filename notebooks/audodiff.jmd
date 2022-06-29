@@ -127,8 +127,8 @@ If we have two functions
 $$f \rightsquigarrow f(a) + \epsilon f'(a)$$
 $$g \rightsquigarrow g(a) + \epsilon g'(a)$$
 
-then we can manipulate these Taylor expansions to calculate combinations of
-these functions as follows. Using the nilpotent algebra, we have that:
+then we can manipulate these Taylor expansions to calculate combinations of these functions as follows. 
+Using the nilpotent algebra, we have that:
 
 $$(f + g) = [f(a) + g(a)] + \epsilon[f'(a) + g'(a)]$$
 
@@ -145,8 +145,8 @@ Setup (not necessary from the REPL):
 using InteractiveUtils  # only needed when using Weave
 ```
 
-Each function requires two pieces of information and some particular "behavior",
-so we store these in a `struct`. It's common to call this a "dual number":
+Each function requires two pieces of information and some particular "behavior", so we store these in a `struct`. 
+It's common to call this a [dual number](https://en.wikipedia.org/wiki/Dual_number):
 
 ```julia
 struct Dual{T}
@@ -155,8 +155,8 @@ struct Dual{T}
 end
 ```
 
-Each `Dual` object represents a function. We define arithmetic operations to
-mirror performing those operations on the corresponding functions.
+Each `Dual` object represents a function. 
+We define arithmetic operations to mirror performing those operations on the corresponding functions.
 
 We must first import the operations from `Base`:
 
@@ -164,12 +164,6 @@ We must first import the operations from `Base`:
 Base.:+(f::Dual, g::Dual) = Dual(f.val + g.val, f.der + g.der)
 Base.:+(f::Dual, α::Number) = Dual(f.val + α, f.der)
 Base.:+(α::Number, f::Dual) = f + α
-
-#=
-You can also write:
-import Base: +
-f::Dual + g::Dual = Dual(f.val + g.val, f.der + g.der)
-=#
 
 Base.:-(f::Dual, g::Dual) = Dual(f.val - g.val, f.der - g.der)
 
@@ -181,7 +175,7 @@ Base.:*(f::Dual, α::Number) = α * f
 # Quotient Rule
 Base.:/(f::Dual, g::Dual) = Dual(f.val/g.val, (f.der*g.val - f.val*g.der)/(g.val^2))
 Base.:/(α::Number, f::Dual) = Dual(α/f.val, -α*f.der/f.val^2)
-Base.:/(f::Dual, α::Number) = f * inv(α) # Dual(f.val/α, f.der * (1/α))
+Base.:/(f::Dual, α::Number) = f * inv(α) 
 
 Base.:^(f::Dual, n::Integer) = Base.power_by_squaring(f, n)  # use repeated squaring for integer powers
 ```
@@ -239,17 +233,13 @@ It seems like we have lost *no* performance.
 @code_native add(a, b)
 ```
 
-We see that the data structure itself has disappeared, and we basically have a
-standard Julia tuple.
+We see that the data structure itself has disappeared, and we basically have a standard Julia tuple.
 
-### Defining Higher Order Primitives
+### Higher Order Primitives
 
 We can also define functions of `Dual` objects, using the chain rule.
-To speed up our derivative function, we can directly hardcode the derivative
-of known functions which we call *primitives*. If `f` is
-a `Dual` representing the function $f$, then `exp(f)` should be a `Dual`
-representing the function $\exp \circ f$, i.e. with value $\exp(f(a))$ and
-derivative $(\exp \circ f)'(a) = \exp(f(a)) \, f'(a)$:
+To speed up our derivative function, we can directly hardcode the derivative of known functions which we call *primitives*. 
+If `f` is a `Dual` representing the function $f$, then `exp(f)` should be a `Dual` representing the function $\exp \circ f$, i.e. with value $\exp(f(a))$ and derivative $(\exp \circ f)'(a) = \exp(f(a)) \, f'(a)$:
 
 ```julia
 import Base: exp
@@ -269,15 +259,11 @@ exp(fd)
 
 ## Differentiating arbitrary functions
 
-For functions where we don't have a rule, we can recursively do dual number
-arithmetic within the function until we hit primitives where we know the derivative,
-and then use the chain rule to propagate the information back up.
+For functions where we don't have a rule, we can recursively do dual number arithmetic within the function until we hit primitives where we know the derivative, and then use the chain rule to propagate the information back up.
 Under this algebra, we can represent $a + \epsilon$ as `Dual(a, 1)`.
-Thus, applying `f` to `Dual(a, 1)` should give `Dual(f(a), f'(a))`. This is thus
-a 2-dimensional number for calculating the derivative without floating point
-error, **using the compiler to transform our equations into dual number arithmetic**.
-To differentiate an arbitrary function, we define a generic function and then
-change the algebra.
+Thus, applying `f` to `Dual(a, 1)` should give `Dual(f(a), f'(a))`. 
+This is thus a 2-dimensional number for calculating the derivative without floating point error, **using the compiler to transform our equations into dual number arithmetic**.
+To differentiate an arbitrary function, we define a generic function and then change the algebra.
 
 ```julia
 hf(x) = x^2 + 2
@@ -678,9 +664,7 @@ x = newton(fsvec2, x0)
 
 ## Conclusion
 
-To make derivative calculations efficient and correct, we can move to higher
-dimensional numbers. In multiple dimensions, these then allow for multiple
-directional derivatives to be computed simultaniously, giving a method for
-computing the Jacobian of a function $f$ on a single input. This is a direct
-application of using the compiler as part of a mathematical framework.
+To make derivative calculations efficient and correct, we can move to higher dimensional numbers. 
+In multiple dimensions, these then allow for multiple directional derivatives to be computed simultaneously, giving a method for computing the Jacobian of a function $f$ on a single input. 
+This is a direct application of using the compiler as part of a mathematical framework.
 
