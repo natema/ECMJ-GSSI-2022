@@ -18,22 +18,9 @@ Lecture material for the course [Elements of Computational Modeling in Julia, GS
 - [A simple climate model](/ECMJ-GSSI-2022/notebooks/simple_climate)
 - [Physics-Informed Neural Networks](/ECMJ-GSSI-2022/notebooks/PINNs)
 
-- (SciML by Rackauckas)  [Discrete Dynamics](https://book.sciml.ai/notes/04/)
-- (ibid.) [Ordinary Differential Equations](https://book.sciml.ai/notes/07/)
+- [Discrete Dynamics](https://book.sciml.ai/notes/04/)
+- (SciML by Rackauckas)  [Ordinary Differential Equations](https://book.sciml.ai/notes/07/)
 - (ibid.) [Forward-Mode Automatic Differentiation](https://book.sciml.ai/notes/08/)
-
-### Potential topics
-
-- (QuantEcon by Perla & Sargent & Stachurski) [A simple epidemic model](https://julia.quantecon.org/continuous_time/seir_model.html)
-- (ibid.) [A less simple epidemic model](https://julia.quantecon.org/continuous_time/covid_sde.html)
-
-- (SciML by Rackauckas) [Stiff Ordinary Differential Equations](https://book.sciml.ai/notes/09/)
-- (ibid.) [Reverse-Mode AD](https://book.sciml.ai/notes/10/)
-- (ibid.) [Differentiable Programming](https://book.sciml.ai/notes/11/)
-- (ibid.) [Physics-Informed Learning](https://book.sciml.ai/notes/15/)
-- (ibid.) [Probabilistic Programming](https://book.sciml.ai/notes/16/)
-- (ibid.) [Global Sensitivity Analysis](https://book.sciml.ai/notes/17/)
-- (ibid.) [Uncertainty Programming](https://book.sciml.ai/notes/19/)
 
 ----
 
