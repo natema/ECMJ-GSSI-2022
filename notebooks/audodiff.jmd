@@ -534,20 +534,17 @@ Using multidimensional Taylor series expansions and doing the manipulations like
 $$f(D) = f(D_0) + f'(D_0)\Sigma \epsilon$$
 
 where $f'$ is the total derivative or the Jacobian of $f$. 
-This then allows our system to be highly efficient by allowing the definition of multidimensional
-functions, like linear algebra, to be primitives of multi-directional
-derivatives.
+This allows our system to be highly efficient by allowing the definition of multidimensional
+functions, like linear algebra, to be primitives of multi-directional derivatives.
 
 ### Higher derivatives
 
-The above techniques can be extended to higher derivatives by
-*adding more terms to the Taylor polynomial*, e.g.
+The above techniques can be extended to higher derivatives by *adding more terms to the Taylor polynomial*, e.g.
 
 $$f(a + \epsilon) = f(a) + \epsilon f'(a) + \frac{1}{2} \epsilon^2 f''(a) + o(\epsilon^2).$$
 
-We treat this as a degree-2 (or degree-$n$, in general) polynomial and do
-polynomial arithmetic to calculate the new polynomials. The coefficients of
-powers of $\epsilon$ then give the higher-order derivatives.
+We treat this as a degree-2 (or degree-$n$, in general) polynomial and do polynomial arithmetic to calculate the new polynomials. 
+The coefficients of powers of $\epsilon$ then give the higher-order derivatives.
 
 For example, for a function $f: \mathbb{R}^n \to \mathbb{R}$ we have
 
@@ -556,7 +553,7 @@ $$f(x + \epsilon v) = f(x) + \epsilon \left[ \sum_i (\partial_i f)(x) v_i \right
 using `Dual` numbers with a single $\epsilon$ component.
 In this way we can compute coefficients of the (symmetric) Hessian matrix.
 
-## Application: solving nonlinear equations using the Newton method
+## Application using the Newton method
 
 As an application, we will see how to solve nonlinear equations of the form
 $$f(x) = 0$$
