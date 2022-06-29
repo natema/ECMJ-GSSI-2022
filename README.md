@@ -18,9 +18,9 @@ Lecture material for the course [Elements of Computational Modeling in Julia, GS
 - [A simple climate model](/ECMJ-GSSI-2022/notebooks/simple_climate)
 - [Physics-Informed Neural Networks](/ECMJ-GSSI-2022/notebooks/PINNs)
 
+- [Forward-Mode Automatic Differentiation](/ECMJ-GSSI-2022/notebooks/autodiff)
 - [Discrete Dynamics](/ECMJ-GSSI-2022/notebooks/dynamical_systems)
 - (SciML by Rackauckas)  [Ordinary Differential Equations](https://book.sciml.ai/notes/07/)
-- (ibid.) [Forward-Mode Automatic Differentiation](https://book.sciml.ai/notes/08/)
 
 ----
 
